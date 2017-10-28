@@ -22,14 +22,13 @@ public class RegisterResult
      * @param authToken the authorization token for the person registering
      * @param userName the username of the person registering
      * @param personID the person ID for the user
-     * @param errorResponse the Error Resonse message
      */
-    public RegisterResult(String authToken, String userName, String personID, String errorResponse)
+    public RegisterResult(String authToken, String userName, String personID)
     {
         this.authToken = authToken;
         this.userName = userName;
         this.personID = personID;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
     /**

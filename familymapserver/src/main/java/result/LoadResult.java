@@ -15,13 +15,11 @@ public class LoadResult
     /**
      * creates a LoadResult object, and creates the error and Success Response
      *
-     * @param successResponse
-     * @param errorResponse
      */
-    public LoadResult(String successResponse, String errorResponse)
+    public LoadResult()
     {
-        this.successResponse = successResponse;
-        this.errorResponse = errorResponse;
+        successResponse = "-";
+        errorResponse = "-";
     }
 
     /**

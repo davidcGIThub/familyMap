@@ -17,7 +17,7 @@ public class ReturnEventService
      */
     public EventResult serve(EventRequest request)
     {
-        EventResult result;
+        EventResult result = null;
         return result;
     }
 }

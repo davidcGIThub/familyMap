@@ -17,7 +17,7 @@ public class LoginService
      */
     public LoginResult serve(LoginRequest request)
     {
-        LoginResult result;
+        LoginResult result = null;
         return result;
     }
 }

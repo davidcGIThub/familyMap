@@ -18,7 +18,7 @@ public class RegisterService
      */
     public RegisterResult serve(RegisterRequest request)
     {
-        RegisterResult result;
+        RegisterResult result = null;
         return result;
     }
 }

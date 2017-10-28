@@ -39,9 +39,8 @@ public class EventResult
      * @param city the city associated with the event
      * @param eventType the event type associated with the event
      * @param year the year that the event occured
-     * @param errorResponse the error Response String
      */
-    public EventResult(String descendant, String eventID, String personID, double latitude, double longitude, String country, String city, String eventType, int year, String errorResponse)
+    public EventResult(String descendant, String eventID, String personID, double latitude, double longitude, String country, String city, String eventType, int year)
     {
         this.descendant = descendant;
         this.eventID = eventID;
@@ -52,7 +51,7 @@ public class EventResult
         this.city = city;
         this.eventType = eventType;
         this.year = year;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
 

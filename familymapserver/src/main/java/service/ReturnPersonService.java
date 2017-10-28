@@ -18,7 +18,7 @@ public class ReturnPersonService
      */
     public PersonResult serve(PersonRequest request)
     {
-        PersonResult result;
+        PersonResult result = null;
         return result;
     }
 }

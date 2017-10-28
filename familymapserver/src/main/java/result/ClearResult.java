@@ -17,10 +17,10 @@ public class ClearResult
      * @param successResponse the sucessful response
      * @param errorResponse the error response
      */
-    public ClearResult(String successResponse, String errorResponse)
+    public ClearResult()
     {
-        this.successResponse = successResponse;
-        this.errorResponse = errorResponse;
+        this.successResponse  = null;
+        this.errorResponse = null;
     }
 
     /**

@@ -22,14 +22,13 @@ public class LoginResult
      * @param authToken the authorization token for the user logging in
      * @param username the username of the person logging in
      * @param personID the person ID for the user logging in
-     * @param errorResponse the error Response for this Result
      */
-    public LoginResult(String authToken, String username, String personID, String errorResponse)
+    public LoginResult(String authToken, String username, String personID)
     {
         this.authToken = authToken;
         this.username = username;
         this.personID = personID;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
 

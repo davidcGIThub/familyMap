@@ -17,12 +17,11 @@ public class UserEventsResult
      * creates a UserEventsResult object, and creates the error response message
      *
      * @param events the events of the user who requested them
-     * @param errorResponse the error response message
      */
-    public UserEventsResult(Event[] events, String errorResponse)
+    public UserEventsResult(Event[] events)
     {
         this.events = events;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
     /**

@@ -14,12 +14,11 @@ public class FillResult
     /**
      * creates a FillResult object, and creates the error and success response
      *
-     * @param successResponse the success response for this result
-     * @param errorResponse the error response for this result
      */
-    public FillResult(String successResponse, String errorResponse) {
-        this.successResponse = successResponse;
-        this.errorResponse = errorResponse;
+    public FillResult()
+    {
+        this.successResponse = null;
+        this.errorResponse = null;
     }
 
     /**

@@ -36,9 +36,9 @@ public class PersonResult
      * @param father the father of the person, may be null
      * @param mother the mother of the person, may be null
      * @param spouse the spouse of the person, may be null
-     * @param errorResponse the error Response message
      */
-    public PersonResult(String descendant, String personID, String firstName, String lastName, String gender, String father, String mother, String spouse, String errorResponse) {
+    public PersonResult(String descendant, String personID, String firstName, String lastName, String gender, String father, String mother, String spouse)
+    {
         this.descendant = descendant;
         this.personID = personID;
         this.firstName = firstName;
@@ -47,7 +47,7 @@ public class PersonResult
         this.father = father;
         this.mother = mother;
         this.spouse = spouse;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
     /**

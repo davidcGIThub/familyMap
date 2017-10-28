@@ -18,7 +18,7 @@ public class ReturnUserEventsService
      */
     public UserEventsResult serve(UserEventsRequest request)
     {
-        UserEventsResult result;
+        UserEventsResult result = null;
         return result;
     }
 }

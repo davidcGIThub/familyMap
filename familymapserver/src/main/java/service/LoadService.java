@@ -17,7 +17,7 @@ public class LoadService
      */
     public LoadResult serve(LoadRequest request)
     {
-        LoadResult result;
+        LoadResult result = null;
         return result;
     }
 }

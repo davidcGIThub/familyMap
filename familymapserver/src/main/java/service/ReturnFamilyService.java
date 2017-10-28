@@ -17,7 +17,7 @@ public class ReturnFamilyService
      */
     public FamilyResult serve(FamilyRequest request)
     {
-        FamilyResult result;
+        FamilyResult result = null;
         return result;
     }
 }

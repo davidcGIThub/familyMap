@@ -44,7 +44,7 @@ public class UserDao
      */
     public boolean checkNameAndPassword(String username, String password)
     {
-        boolean valid;
+        boolean valid = true;
         return valid;
     }
 
@@ -56,7 +56,8 @@ public class UserDao
      */
     public User getUser(String username)
     {
-
+        User user = null;
+        return user;
     }
 
     /**

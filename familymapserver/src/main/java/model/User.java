@@ -115,7 +115,7 @@ public class User
      *
      * @return person
      */
-    public Person getPerson()
+    public String getPerson()
     {
         return person;
     }

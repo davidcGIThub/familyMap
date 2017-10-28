@@ -18,12 +18,11 @@ public class FamilyResult
      * creates an FamilyResult object, and creates the error response
      *
      * @param persons the array of person objects being retrieved
-     * @param errorResponse the error response for this result
      */
-    public FamilyResult(Person[] persons, String errorResponse)
+    public FamilyResult(Person[] persons)
     {
         this.persons = persons;
-        this.errorResponse = errorResponse;
+        this.errorResponse = null;
     }
 
 

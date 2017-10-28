@@ -17,7 +17,7 @@ public class FillService
      */
     public FillResult serve(FillRequest request)
     {
-        FillResult result;
+        FillResult result = null;
         return result;
     }
 }

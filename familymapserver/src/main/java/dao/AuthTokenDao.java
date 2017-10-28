@@ -35,7 +35,8 @@ public class AuthTokenDao
      */
     public boolean checkAuthorization(AuthToken token)
     {
-
+        boolean auth = true;
+        return auth;
     }
 
 

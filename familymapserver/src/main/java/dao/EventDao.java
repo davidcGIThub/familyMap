@@ -45,7 +45,7 @@ public class EventDao
      */
     public  Event[] getUserEvents(String username)
     {
-        Event[] events;
+        Event[] events= null;
         return events;
     }
 
@@ -57,7 +57,7 @@ public class EventDao
      */
     public Event[] getPersonEvents(String personID)
     {
-        Event[] events;
+        Event[] events = null;
         return events;
     }
 
@@ -69,7 +69,7 @@ public class EventDao
      */
     public Event getEvent(String eventID)
     {
-        Event event = new Event();
+        Event event = null;
         return event;
     }
 

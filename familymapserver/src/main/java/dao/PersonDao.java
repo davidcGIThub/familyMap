@@ -42,7 +42,7 @@ public class PersonDao
      * @return person object
      */
     public Person getPerson(String personID) {
-        Person person = new Person();
+        Person person = null;
         return person;
     }
 
@@ -54,7 +54,7 @@ public class PersonDao
      */
     public Person[] getUserPersons(String username)
     {
-        Person[] persons;
+        Person[] persons = null;
         return persons;
     }
 
