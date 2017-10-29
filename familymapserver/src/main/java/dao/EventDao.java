@@ -1,4 +1,5 @@
 package dao;
+import java.sql.*;
 
 import model.Event;
 
@@ -8,13 +9,15 @@ import model.Event;
 
 public class EventDao
 {
+    Connection c;
+
     /**
      * creates and EventDao object
      *
      */
-    public EventDao()
+    public EventDao(Connection c)
     {
-
+        this.c = c;
     }
 
     /**

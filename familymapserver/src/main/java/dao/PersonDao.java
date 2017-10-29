@@ -1,5 +1,5 @@
 package dao;
-
+import java.sql.*;
 import model.Person;
 
 /**
@@ -8,12 +8,13 @@ import model.Person;
 
 public class PersonDao
 {
+    Connection c;
     /**
      * creates a PersonDao object
      */
-    public PersonDao()
+    public PersonDao(Connection c)
     {
-
+        this.c = c;
     }
 
     /**

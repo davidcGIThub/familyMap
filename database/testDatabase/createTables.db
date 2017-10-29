@@ -1,0 +1,48 @@
+
+create table Persons
+(
+    PersonID text not null primary key,
+    Descendant text not null,
+    FirstName text not null,
+    LastName text not null,
+    Gender text not null,
+    Father text,
+    Mother text,
+    Spouse text,
+    contraint ck_Gender check (Gender in ('m','f'))
+);
+
+create table Events
+(
+    EventID text not null primary key,
+    Descendant text not null,
+    PersonID text not null,
+    Latitude real not null,
+    Longitude real not null,
+    Country text not null,
+    City text not null,
+    EventType text not null,
+    Year int not null
+);
+
+create table Users
+(
+    Username text not null primary key,
+    Password text not null,
+    Email text not null,
+    PersonID text not null
+);
+
+create table Tokens
+(
+    Tokens text not null primary key,
+    Username text not null,
+    TimeStamp text not null
+);
+
+
+drop table if exists Persons;
+drop table if exists Events;
+drop table if exists Users;
+drop table if exists Tokens;
+

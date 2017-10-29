@@ -9,6 +9,10 @@ public class daoTestDriver {
     public static void main( String args[] )
     {
         DaoManager man = new DaoManager();
-        man.createDatabase();
+        man.OpenSqlSession();
+        man.createFamilyMapTables();
+        man.deleteAll();
+        man.closeSqlSession();
+
     }
 }

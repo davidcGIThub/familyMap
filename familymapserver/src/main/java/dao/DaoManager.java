@@ -8,27 +8,71 @@ import java.sql.*;
 
 public class DaoManager
 {
-
-    public void createDatabase()
-    {
-        Connection c = null;
-        try
-        {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        System.out.println("Opened database successfully");
-    }
+    /** connection that will be stored by this Dao Manager*/
+    Connection c;
+    /** authorization token data access object */
+    public AuthTokenDao authDao;
+    /** event data access object */
+    public EventDao eDao;
+    /** person data access object */
+    public PersonDao pDao;
+    /** user data access object */
+    public UserDao uDao;
 
     /**
      * creates a DoaManager object
      */
     public DaoManager()
     {
+        this.OpenSqlSession();
 
+    }
+
+    public void createFamilyMapTables()
+    {
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE Persons" +
+                    "(PersonID text not null primary key," +
+                    " Descendant text not null, " +
+                    " FirstName text not null, " +
+                    " LastName text not null, " +
+                    " Gender text not null, " +
+                    " Father text, " +
+                    " Mother text, " +
+                    " Spouse text, " +
+                    " contraint ck_Gender check (Gender in ('m','f'))); " +
+
+                    "CREATE TABLE Events" +
+                    "(EventID text not null primary key, " +
+                    " Descendant text not null, " +
+                    " PersonID text not null, " +
+                    " Latitude real not null, " +
+                    " Longitude real not null, " +
+                    " Country text not null, " +
+                    " City text not null, " +
+                    " EventType text not null, " +
+                    " Year int not null); " +
+
+                    " CREATE TABLE Users" +
+                    " (Username text not null primary key, " +
+                    " Password text not null, " +
+                    " Email text not null, " +
+                    " PersonID text not null); " +
+
+                    " CREATE TABLE Tokens " +
+                    " (Tokens text not null primary key, " +
+                    " Username text not null, " +
+                    " TimeStamp text not null); ";
+
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Table created successfully");
     }
 
     /**
@@ -36,6 +80,14 @@ public class DaoManager
      */
     public void OpenSqlSession()
     {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:database/FamilyMap.db");
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Opened database successfully");
         
     }
 
@@ -44,7 +96,17 @@ public class DaoManager
      */
     public void closeSqlSession()
     {
+        try
+        {
+            this.c.close();
+            System.out.println("Closed database successfully");
 
+        }
+        catch ( Exception e )
+        {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
     }
 
     /**
@@ -52,6 +114,21 @@ public class DaoManager
      */
     public void deleteAll()
     {
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            String sql = " drop table if exists Persons; " +
+                        " drop table if exists Events; " +
+                        " drop table if exists Users; " +
+                        " drop table if exists Tokens; ";
 
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Deleted all data successfully");
     }
 }

@@ -13,7 +13,7 @@ public class User
     /** email address for the user*/
     private String email;
     /** unique person ID that belongs to this user*/
-    private String person;
+    private String personID;
 
     /**
      * creates a user object
@@ -23,12 +23,12 @@ public class User
      * @param email     email being set
      * @param person    personID being set
      */
-    public User(String username, String password, String email, String person)
+    public User(String username, String password, String email, String personID)
     {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.person = person;
+        this.personID = personID;
     }
 
     /**
@@ -75,9 +75,9 @@ public class User
      *
      * @param person person being added
      */
-    public void setPerson(String person)
+    public void setPersonID(String personID)
     {
-        this.person = person;
+        this.personID = personID;
     }
 
     /**
@@ -95,7 +95,7 @@ public class User
      *
       * @return password
      */
-    String getPassword()
+    public String getPassword()
     {
         return password;
     }
@@ -115,8 +115,8 @@ public class User
      *
      * @return person
      */
-    public String getPerson()
+    public String getPersonID()
     {
-        return person;
+        return personID;
     }
 }

@@ -1,5 +1,5 @@
 package dao;
-
+import java.sql.*;
 import model.AuthToken;
 
 /**
@@ -8,12 +8,13 @@ import model.AuthToken;
 
 public class AuthTokenDao
 {
+    Connection c;
     /**
      * creates an authorization token object
      */
-    public AuthTokenDao()
+    public AuthTokenDao(Connection c)
     {
-
+        this.c = c;
     }
 
     /**
