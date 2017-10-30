@@ -23,50 +23,38 @@ public class UserDao
      *
      * @param user user model being created
      */
-    public void createUser(User user)
+    public void addUser(User user)
     {
-
         Statement stmt = null;
         try {
-
             stmt = c.createStatement();
-            String sql = "INSERT INTO Users (Username,Password,Email,PersonID) " +
-                    "VALUES (" + user.getUsername() + "," + user.getPassword() + "," + user.getEmail()  + "," + user.getPersonID() + ");";
-            stmt.executeUpdate(sql);
-
-            sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) " +
-                    "VALUES (2, 'Allen', 25, 'Texas', 15000.00 );";
-            stmt.executeUpdate(sql);
-
-            sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) " +
-                    "VALUES (3, 'Teddy', 23, 'Norway', 20000.00 );";
-            stmt.executeUpdate(sql);
-
-            sql = "INSERT INTO COMPANY (ID,NAME,AGE,ADDRESS,SALARY) " +
-                    "VALUES (4, 'Mark', 25, 'Rich-Mond ', 65000.00 );";
+            String sql = "INSERT INTO Users (Username, Password, Email, PersonID) " +
+                    "VALUES ('" + user.getUsername() + "', '" + user.getPassword() + "', '" + user.getEmail()  + "', '" + user.getPersonID() + "');";
             stmt.executeUpdate(sql);
 
             stmt.close();
-            c.commit();
-            c.close();
+            //c.commit(); it is in autocommit mode
         }
         catch ( Exception e )
         {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Records created successfully");
+        System.out.println("User added successfully");
     }
 
 
     /**
      * imports many users into the database
      *
-     * @param user array of users being imported
+     * @param users array of users being imported
      */
-    public void importUsers(User[] user)
+    public void importUsers(User[] users)
     {
-
+        for(int i = 0; i < users.length; i++)
+        {
+            this.addUser(users[i]);
+        }
     }
 
     /**
@@ -78,7 +66,31 @@ public class UserDao
      */
     public boolean checkNameAndPassword(String username, String password)
     {
-        boolean valid = true;
+        boolean valid = false;
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Users;" );
+
+            while ( rs.next() )
+            {
+                String username_ = rs.getString("Username");
+                String password_ = rs.getString("Password");
+
+                if(username_.equals(username) && password_.equals(password))
+                {
+                    valid = true;
+                    break;
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Username and Password Authentication Successfull");
         return valid;
     }
 

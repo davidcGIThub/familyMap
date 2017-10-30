@@ -25,6 +25,7 @@ public class DaoManager
     public DaoManager()
     {
         this.OpenSqlSession();
+        uDao = new UserDao(c);
 
     }
 
@@ -68,6 +69,7 @@ public class DaoManager
 
             stmt.executeUpdate(sql);
             stmt.close();
+
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
@@ -83,6 +85,7 @@ public class DaoManager
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:database/FamilyMap.db");
+            c.setAutoCommit(true);
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
