@@ -74,7 +74,6 @@ public class PersonDao
 
         try
         {
-
             prepared = c.prepareStatement("SELECT * FROM Persons WHERE PersonID = ?;");
             prepared.setString(1, personID);
             ResultSet rs = prepared.executeQuery();

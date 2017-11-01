@@ -18,7 +18,7 @@ public class FamilyResult
      * creates an FamilyResult object, and creates the error response
      *
      * @param persons the array of person objects being retrieved
-     * @param errorResponse the type of error (IAT, ISE, NA)
+     * @param errorResponse the type of error
      */
     public FamilyResult(Person[] persons, String errorResponse)
     {
@@ -59,23 +59,10 @@ public class FamilyResult
 
     /**
      * sets the error response dependant on the error specified
-     * @param errorResponse the type of error (IAT, ISE, NA)
+     * @param errorResponse the type of error
      */
     public void setErrorResponse(String errorResponse)
     {
-        switch(errorResponse)
-        {
-            case "IAT":
-                this.errorResponse = "Family Service Error: Invalid Authorization Token";
-                break;
-            case "ISE":
-                this.errorResponse = "Family Service Error: Internal Server Error";
-                break;
-            case "NA":
-                this.errorResponse = "No Errors";
-                break;
-            default:
-                this.errorResponse = "Family Service Error: Error Unknown, misuse of setErrorResponse";
-        }
+        this.errorResponse = errorResponse;
     }
 }

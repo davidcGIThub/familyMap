@@ -22,7 +22,7 @@ public class LoginResult
      * @param authToken the authorization token for the user logging in
      * @param username the username of the person logging in
      * @param personID the person ID for the user logging in
-     * @param errorResponse the type of error (IRP, MRP, ISE, NA)
+     * @param errorResponse the type of error
      */
     public LoginResult(String authToken, String username, String personID, String errorResponse)
     {
@@ -106,21 +106,10 @@ public class LoginResult
     /**
      * sets the error response dependant on what is error is specified
      *
-     * @param errorResponse the type of error (IRP, MRP, ISE, NA)
+     * @param errorResponse the type of error
      */
     public void setErrorResponse(String errorResponse)
     {
-        switch (errorResponse)
-        {
-            case "IRP": this.errorResponse = "Login Service Error: Invalid request property";
-                break;
-            case "MRP": this.errorResponse = "Login Service Error: Missing request property";
-                break;
-            case "ISE": this.errorResponse = "Login Service Error: Internal Server Error";
-                break;
-            case "NA": this.errorResponse = "No Errors";
-                break;
-            default: this.errorResponse = "Login Service Error: Error Unknown, misuse of setErrorResponse";
-        }
+        this.errorResponse = errorResponse;
     }
 }

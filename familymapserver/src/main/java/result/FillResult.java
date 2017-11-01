@@ -16,7 +16,7 @@ public class FillResult
      *
      * @param numPersons the number of persons added
      * @param numEvents the number of events added
-     * @param errorResponse the type of error (IUN, IGP, ISE, NA)
+     * @param errorResponse the type of error
      */
     public FillResult(int numPersons, int numEvents, String errorResponse)
     {
@@ -55,21 +55,10 @@ public class FillResult
     /**
      * creates an error response dependant on what error is specified
      *
-     * @param errorResponse the type of error (IUN, IGP, ISE, NA)
+     * @param errorResponse the type of error
      */
     public void setErrorResponse(String errorResponse)
     {
-        switch (errorResponse)
-        {
-            case "IUN": this.errorResponse = "Fill Service Error: Invalid username";
-                break;
-            case "IGP": this.errorResponse = "Fill Service Error: Invalid generations parameter";
-                break;
-            case "ISE": this.errorResponse = "Fill Service Error: Internal Server Error";
-                break;
-            case "NA": this.errorResponse = "No Errors";
-                break;
-            default: this.errorResponse = "Fill Service Error: Error Unknown, misuse of setErrorResponse";
-        }
+        this.errorResponse = errorResponse;
     }
 }

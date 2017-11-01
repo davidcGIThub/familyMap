@@ -22,3 +22,8 @@ public class ReturnUserEventsService
         return result;
     }
 }
+
+           //"UserEvents Service Error: Invalid authorization token";
+            // "UserEvents Service Error: Internal Server Error";
+            // "No Errors";
+            // "UserEvents Service Error: Error Unknown, misuse of setErrorResponse";

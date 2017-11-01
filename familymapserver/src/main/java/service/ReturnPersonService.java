@@ -22,3 +22,11 @@ public class ReturnPersonService
         return result;
     }
 }
+
+
+       //"Person Service Error: Invalid authorization token";
+       //"Person Service Error: Invalid person ID parameter";
+       //"Person Service Error: Requested person does not belong to this user";
+        //"Person Service Error: Internal servor error";
+        //"No Errors";
+        //"Person Service Error: Error Unknown, misuse of setErrorResponse";

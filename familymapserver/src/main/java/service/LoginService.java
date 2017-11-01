@@ -21,3 +21,9 @@ public class LoginService
         return result;
     }
 }
+
+        //"Login Service Error: Invalid request property";
+        //"Login Service Error: Missing request property";
+        //"Login Service Error: Internal Server Error";
+        //"No Errors";
+        //"Login Service Error: Error Unknown, misuse of setErrorResponse";

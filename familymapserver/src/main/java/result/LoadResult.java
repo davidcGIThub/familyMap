@@ -18,7 +18,7 @@ public class LoadResult
      * @param numUsers the number of users added
      * @param numPersons the number of persons added
      * @param numEvents the number of events added
-     * @param errorResponse type of error (IRD-MV, IRD-IV, ISE, NA)
+     * @param errorResponse type of error
      */
 
     public LoadResult(int numUsers, int numPersons, int numEvents, String errorResponse)
@@ -50,22 +50,11 @@ public class LoadResult
     /**
      * sets the error response dependant on the error specified
      *
-     * @param errorResponse the type of error (IRD-MV, IRD-IV, ISE, NA)
+     * @param errorResponse the type of error
      */
     public void setErrorResponse(String errorResponse)
     {
-        switch (errorResponse)
-        {
-            case "IRD-MV": this.errorResponse = "Load Service Error: Invalid request data - missing values";
-                break;
-            case "IRD-IV": this.errorResponse = "Load Service Error: Invalid request data - invalid values";
-                break;
-            case "ISE": this.errorResponse = "Load Service Error: Internal Server Error";
-                break;
-            case "NA": this.errorResponse = "No Errors";
-                break;
-            default: this.errorResponse = "Load Service Error: Error Unknown, misuse of setErrorResponse";
-        }
+        this.errorResponse = errorResponse;
     }
 
     /**
@@ -80,3 +69,4 @@ public class LoadResult
         this.successResponse = "Load Service Complete: Successfully added " + numUsers + " users, " + numPersons + " persons, and " + numEvents + " events to the database.";
     }
 }
+

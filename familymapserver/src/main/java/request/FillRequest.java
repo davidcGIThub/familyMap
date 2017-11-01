@@ -9,17 +9,17 @@ public class FillRequest
     /** the number of generations that will be created for the user*/
     private int generations;
     /** the authorization token of the user and session*/
-    private String authToken;
+    private String username;
 
     /**
      *
      * @param generations
-     * @param authToken
+     * @param username
      */
-    public FillRequest(int generations, String authToken)
+    public FillRequest(int generations, String username)
     {
         this.generations = generations;
-        this.authToken = authToken;
+        this.username = username;
     }
 
     /**
@@ -47,18 +47,18 @@ public class FillRequest
      *
      * @return authToken
      */
-    public String getAuthToken()
+    public String getUsername()
     {
-        return authToken;
+        return username;
     }
 
     /**
      * sets the authorization token for the user and session
      *
-     * @param authToken the authorization token for the user and session
+     * @param username the authorization token for the user and session
      */
-    public void setAuthToken(String authToken)
+    public void setUsername(String username)
     {
-        this.authToken = authToken;
+        this.username = username;
     }
 }

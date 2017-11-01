@@ -1,7 +1,8 @@
 package service;
-
 import result.ClearResult;
 import request.ClearRequest;
+import dao.DaoManager;
+import dao.DaoException;
 
 /**
  * Created by dc1992 on 10/12/17.
@@ -18,8 +19,20 @@ public class ClearService
      */
     public ClearResult serve(ClearRequest request)
     {
-        
         ClearResult result = null;
+        try
+        {
+            DaoManager man = new DaoManager();
+            man.deleteAll();
+            man.closeSqlSession();
+            result = new ClearResult("No Errors");
+        }
+        catch(DaoException e)
+        {
+            //System.err.println(e.getFunction());
+            result = new ClearResult("Internal Server Error: " + e.getFunction());
+        }
         return result;
     }
 }
+

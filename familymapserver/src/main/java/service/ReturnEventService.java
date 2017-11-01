@@ -21,3 +21,18 @@ public class ReturnEventService
         return result;
     }
 }
+
+
+
+        //"Event Service Error: Invalid authorization token";
+
+        //"Event Service Error: Invalid event ID parameter";
+
+        //"Event Service Error: Requested event does not belong to this user";
+
+        //"Event Service Error: Internal Server Error";
+
+        //"No Errors";
+
+        //"Event Service Error: Error Unknown, misuse of setErrorResponse";
+

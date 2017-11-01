@@ -21,3 +21,9 @@ public class LoadService
         return result;
     }
 }
+
+// "Load Service Error: Invalid request data - missing values";
+// "Load Service Error: Invalid request data - invalid values";
+// "Load Service Error: Internal Server Error";
+// "No Errors";
+// "Load Service Error: Error Unknown, misuse of setErrorResponse";

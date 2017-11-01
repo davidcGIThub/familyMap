@@ -11,13 +11,16 @@ public class ClearResult
     /** Error response that will be printed to the user*/
     private String errorResponse;
 
+
     /**
      * creates a ClearResult object
+     *
+     * @param errorResponse this is the type of error
      */
-    public ClearResult()
+    public ClearResult(String errorResponse)
     {
         this.successResponse  = "Clear Service Complete: Clear succeeded";
-        this.errorResponse = "Error: Internal servor error";
+        this.errorResponse = errorResponse;
     }
 
     /**
@@ -38,5 +41,15 @@ public class ClearResult
     public String getErrorResponse()
     {
         return errorResponse;
+    }
+
+    /**
+     * sets the error response dependant on the type of error specified
+     *
+     * @param errorResponse type of error
+     */
+    public void setErrorResponse(String errorResponse)
+    {
+        this.errorResponse = errorResponse;
     }
 }

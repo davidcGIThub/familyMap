@@ -22,3 +22,11 @@ public class RegisterService
         return result;
     }
 }
+
+    //"Register Service Error: Invalid request property";
+    //"Register Service Error: Missing request property";
+    //"Register Service Error: Username already taken by another user";
+    //"Register Service Error: Internal Server Error";
+    //"No Errors";
+    //"Register Service Error: Error Unknown, misuse of setErrorResponse";
+

@@ -86,6 +86,38 @@ public class AuthTokenDao
         return authorized;
     }
 
+    /**
+     * gets the username from the authorization token given
+     *
+     * @param authToken the authorization token give
+     * @return the matching username
+     * @throws DaoException
+     */
+    public String getUsername(String authToken) throws DaoException
+    {
+        Statement stmt = null;
+        String username_ = null;
+        try
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Tokens;" );
+
+            while ( rs.next() )
+            {
+                String token_ = rs.getString("Token");
+                if(token_.equals(authToken))
+                {
+                    username_ = rs.getString("Username");
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            throw new DaoException("getUsername(): " + e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return username_;
+    }
+
 
     /**
      * deletes the specified token
