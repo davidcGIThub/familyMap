@@ -17,11 +17,11 @@ public class UserEventsResult
      * creates a UserEventsResult object, and creates the error response message
      *
      * @param events the events of the user who requested them
+     * @param errorResponse the type of error (IAT, ISE, NA)
      */
-    public UserEventsResult(Event[] events)
+    public UserEventsResult(Event[] events, String errorResponse)
     {
-        this.events = events;
-        this.errorResponse = null;
+        setErrorResponse(errorResponse);
     }
 
     /**
@@ -52,5 +52,24 @@ public class UserEventsResult
     public String getErrorResponse()
     {
         return errorResponse;
+    }
+
+    /**
+     * sets the error response dependant on the type of error specified
+     *
+     * @param errorResponse type of error (IAT, ISE, NA)
+     */
+    public void setErrorResponse(String errorResponse)
+    {
+        switch (errorResponse)
+        {
+            case "IAT": this.errorResponse = "UserEvents Service Error: Invalid authorization token";
+                break;
+            case "ISE": this.errorResponse = "UserEvents Service Error: Internal Server Error";
+                break;
+            case "NA": this.errorResponse = "No Errors";
+                break;
+            default: this.errorResponse = "UserEvents Service Error: Error Unknown, misuse of setErrorResponse";
+        }
     }
 }

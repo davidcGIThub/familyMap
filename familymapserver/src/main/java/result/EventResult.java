@@ -39,8 +39,9 @@ public class EventResult
      * @param city the city associated with the event
      * @param eventType the event type associated with the event
      * @param year the year that the event occured
+     * @param errorResponse the type of error (IAT, IEIP, RE, ISE, NA)
      */
-    public EventResult(String descendant, String eventID, String personID, double latitude, double longitude, String country, String city, String eventType, int year)
+    public EventResult(String descendant, String eventID, String personID, double latitude, double longitude, String country, String city, String eventType, int year, String errorResponse)
     {
         this.descendant = descendant;
         this.eventID = eventID;
@@ -51,7 +52,7 @@ public class EventResult
         this.city = city;
         this.eventType = eventType;
         this.year = year;
-        this.errorResponse = null;
+        setErrorResponse(errorResponse);
     }
 
 
@@ -241,5 +242,28 @@ public class EventResult
     public String getErrorResponse()
     {
         return errorResponse;
+    }
+
+    /**
+     * sets the errorResponse dependant on the error specified
+     *
+     * @param errorResponse the type of error (IAT, IEIP, RE, ISE, NA)
+     */
+    public void setErrorResponse(String errorResponse)
+    {
+        switch (errorResponse)
+        {
+            case "IAT": this.errorResponse = "Event Service Error: Invalid authorization token";
+                break;
+            case "IEIP": this.errorResponse = "Event Service Error: Invalid event ID parameter";
+                break;
+            case "RE": this.errorResponse = "Event Service Error: Requested event does not belong to this user";
+                break;
+            case "ISE": this.errorResponse = "Event Service Error: Internal Server Error";
+                break;
+            case "NA": this.errorResponse = "No Errors";
+                break;
+            default: this.errorResponse = "Event Service Error: Error Unknown, misuse of setErrorResponse";
+        }
     }
 }

@@ -9,15 +9,14 @@ import java.sql.Timestamp;
  * Created by david on 10/28/17.
  */
 
-public class daoTestDriver {
-
+public class daoTestDriver
+{
     public static void main( String args[] )
     {
         DaoManager man = new DaoManager();
         man.createFamilyMapTables();
 
-
-        /** ****** Test the UserDao class ********
+        /** ****** Test the UserDao class ********/
          // Test addUser
          User u0 = new User("username0", "password0", "email0" , "personID0");
          man.uDao.addUser(u0);
@@ -32,11 +31,10 @@ public class daoTestDriver {
         // Test deleting one user
          man.uDao.deleteUser("username2");
         // Test deleting all the users
-        man.uDao.deleteAllUsers();
-
+        //man.uDao.deleteAllUsers();
         //*******************************************/
 
-        /** Test the PersonDao class **************
+        /** Test the PersonDao class **************/
         //Test the addPerson
         Person p0 = new Person("personID0", "descendant2", "firstName0" , "lastName0", "m", "father0", "mother0","spouse0");
         man.pDao.addPerson(p0);
@@ -61,10 +59,10 @@ public class daoTestDriver {
         //Test deletePerson
         man.pDao.deletePerson("personID1");
         //Test deleteAllPersons
-        man.pDao.deleteAllPersons();
+        //man.pDao.deleteAllPersons();
         //*******************************************/
 
-        /** Test the EventDao class **************
+        /** Test the EventDao class **************/
         //test addEvent
         Event e0 = new Event("eventID0", "descendant0", "personID0",0,0,"country0","city0","eventType0",0);
         man.eDao.addEvent(e0);
@@ -99,7 +97,7 @@ public class daoTestDriver {
         //test deleteEvent
         man.eDao.deleteEvent("eventID0");
         //test deleteAllEvents
-        man.eDao.deleteAllEvents();
+        //man.eDao.deleteAllEvents();
         //*******************************************/
 
         /** Test the AuthTokenDao class ************** */
@@ -121,15 +119,18 @@ public class daoTestDriver {
         System.out.println("Token " + a3.getToken() + " 's authorization is " + man.aDao.checkAuthorization(a3));
         // Tests the deleteToken
         man.aDao.deleteToken("token0");
+        //Tests the refresh Tokens
+        AuthToken a4 = new AuthToken("token4","username4",timeCurrent);
+        AuthToken a5 = new AuthToken("token5","username5",timeExpired);
+        man.aDao.addToken(a4);
+        man.aDao.addToken(a5);
+        man.aDao.refreshTokens();
         // Tests the deleteAllTokens
-        man.aDao.deleteAllTokens();
-
-
-
+        //man.aDao.deleteAllTokens();
         //*******************************************/
 
         //Test the delete all function
-        //man.deleteAll();
+        man.deleteAll();
         man.closeSqlSession();
 
     }

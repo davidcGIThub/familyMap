@@ -36,8 +36,9 @@ public class PersonResult
      * @param father the father of the person, may be null
      * @param mother the mother of the person, may be null
      * @param spouse the spouse of the person, may be null
+     * @param errorResponse the type of error (IAT, IPIP, RP, ISE, NA)
      */
-    public PersonResult(String descendant, String personID, String firstName, String lastName, String gender, String father, String mother, String spouse)
+    public PersonResult(String descendant, String personID, String firstName, String lastName, String gender, String father, String mother, String spouse, String errorResponse)
     {
         this.descendant = descendant;
         this.personID = personID;
@@ -47,7 +48,7 @@ public class PersonResult
         this.father = father;
         this.mother = mother;
         this.spouse = spouse;
-        this.errorResponse = null;
+        setErrorResponse(errorResponse);
     }
 
     /**
@@ -202,5 +203,28 @@ public class PersonResult
      */
     public String getErrorResponse() {
         return errorResponse;
+    }
+
+    /**
+     * sets the error response dependant on the error specified
+     *
+     * @param errorResponse the type of error (IAT, IPIP, RP, ISE, NA)
+     */
+    public void setErrorResponse(String errorResponse)
+    {
+        switch (errorResponse)
+        {
+            case "IAT": this.errorResponse = "Person Service Error: Invalid authorization token";
+                break;
+            case "IPIP": this.errorResponse = "Person Service Error: Invalid person ID parameter";
+                break;
+            case "RP": this.errorResponse = "Person Service Error: Requested person does not belong to this user";
+                break;
+            case "ISE": this.errorResponse = "Person Service Error: Internal servor error";
+                break;
+            case "NA": this.errorResponse = "No Errors";
+                break;
+            default: this.errorResponse = "Person Service Error: Error Unknown, misuse of setErrorResponse";
+        }
     }
 }

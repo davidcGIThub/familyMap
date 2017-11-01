@@ -134,7 +134,29 @@ public class AuthTokenDao
      */
     public void refreshTokens()
     {
+        boolean authorized = false;
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Tokens;" );
+            while ( rs.next() )
+            {
+                String token_ = rs.getString("Token");
+                String timeStamp_ = rs.getString("TimeStamp");
 
+                if(isExpired(timeStamp_))
+                {
+                    this.deleteToken(token_);
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Expired token deletion is Successfull");
     }
 
     /**

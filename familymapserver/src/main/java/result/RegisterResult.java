@@ -22,13 +22,14 @@ public class RegisterResult
      * @param authToken the authorization token for the person registering
      * @param userName the username of the person registering
      * @param personID the person ID for the user
+     * @param errorResponse the type of error (IRP, MRP, UT, ISE, NA)
      */
-    public RegisterResult(String authToken, String userName, String personID)
+    public RegisterResult(String authToken, String userName, String personID, String errorResponse)
     {
         this.authToken = authToken;
         this.userName = userName;
         this.personID = personID;
-        this.errorResponse = null;
+        setErrorResponse(errorResponse);
     }
 
     /**
@@ -100,5 +101,28 @@ public class RegisterResult
     public String getErrorResponse()
     {
         return errorResponse;
+    }
+
+    /**
+     * sets the error response dependant on the error specified
+     *
+     * @param errorResponse the type of error (IRP, MRP, UT, ISE, NA)
+     */
+    public void setErrorResponse(String errorResponse)
+    {
+        switch (errorResponse)
+        {
+            case "IRP": this.errorResponse = "Register Service Error: Invalid request property";
+                break;
+            case "MRP": this.errorResponse = "Register Service Error: Missing request property";
+                break;
+            case "UT": this.errorResponse = "Register Service Error: Username already taken by another user";
+                break;
+            case "ISE": this.errorResponse = "Register Service Error: Internal Server Error";
+                break;
+            case "NA": this.errorResponse = "No Errors";
+                break;
+            default: this.errorResponse = "Register Service Error: Error Unknown, misuse of setErrorResponse";
+        }
     }
 }

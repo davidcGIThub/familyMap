@@ -12,15 +12,12 @@ public class ClearResult
     private String errorResponse;
 
     /**
-     * creates a ClearResult object, and creates the success and error response
-     *
-     * @param successResponse the sucessful response
-     * @param errorResponse the error response
+     * creates a ClearResult object
      */
     public ClearResult()
     {
-        this.successResponse  = null;
-        this.errorResponse = null;
+        this.successResponse  = "Clear Service Complete: Clear succeeded";
+        this.errorResponse = "Error: Internal servor error";
     }
 
     /**

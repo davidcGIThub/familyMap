@@ -83,7 +83,7 @@ public class DaoManager
     /**
      * opens a session in SQL
      */
-    public void OpenSqlSession()
+    private void OpenSqlSession()
     {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -120,22 +120,9 @@ public class DaoManager
      */
     public void deleteAll()
     {
-        Statement stmt = null;
-        try
-        {
-            stmt = c.createStatement();
-            String sql = " drop table if exists Persons; " +
-                        " drop table if exists Events; " +
-                        " drop table if exists Users; " +
-                        " drop table if exists Tokens; ";
-
-            stmt.executeUpdate(sql);
-            stmt.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-        System.out.println("Deleted all data successfully");
-        this.createFamilyMapTables();
+        aDao.deleteAllTokens();
+        pDao.deleteAllPersons();
+        uDao.deleteAllUsers();
+        eDao.deleteAllEvents();
     }
 }
