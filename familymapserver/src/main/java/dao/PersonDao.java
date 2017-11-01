@@ -22,7 +22,7 @@ public class PersonDao
      *
      * @param person person object
      */
-    public void addPerson(Person person)
+    public void addPerson(Person person) throws DaoException
     {
         Statement stmt = null;
         try
@@ -34,14 +34,11 @@ public class PersonDao
                     "', '" + person.getMother() + "', '" + person.getSpouse() + "');";
             stmt.executeUpdate(sql);
             stmt.close();
-            //c.commit(); it is in autocommit mode
         }
         catch ( Exception e )
         {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("addPerson():" + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Person added successfully");
     }
 
     /**
@@ -49,11 +46,17 @@ public class PersonDao
      *
      * @param persons array of person objects
      */
-    public void importPersons(Person[] persons)
+    public void importPersons(Person[] persons) throws DaoException
     {
-        for(int i = 0; i < persons.length; i++)
+        try
         {
-            this.addPerson(persons[i]);
+            for (int i = 0; i < persons.length; i++) {
+                this.addPerson(persons[i]);
+            }
+        }
+        catch(DaoException e)
+        {
+            throw new DaoException("importPersons() - " + e.getFunction());
         }
 
     }
@@ -64,7 +67,7 @@ public class PersonDao
      * @param personID ID of the person wanted
      * @return person object
      */
-    public Person getPerson(String personID)
+    public Person getPerson(String personID) throws DaoException
     {
         Person person = null;
         PreparedStatement prepared = null;
@@ -87,10 +90,8 @@ public class PersonDao
             rs.close();
             prepared.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("getPerson(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Person retrieved successfully");
         return person;
     }
 
@@ -100,7 +101,7 @@ public class PersonDao
      * @param username descendant of all the persons
      * @return an array of persons
      */
-    public Person[] getUserPersons(String username)
+    public Person[] getUserPersons(String username) throws DaoException
     {
         Person[] persons = null;
         PreparedStatement prepared = null;
@@ -133,10 +134,8 @@ public class PersonDao
             rs.close();
             prepared.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("getUserPersons(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All user persons retrieved successfully");
         return persons;
     }
 
@@ -145,7 +144,7 @@ public class PersonDao
      *
      * @param username descendant of all the persons
      */
-    public void deleteUserPersons(String username)
+    public void deleteUserPersons(String username) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -154,10 +153,8 @@ public class PersonDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteUserPersons(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All user persons deleted successfully");
     }
 
     /**
@@ -165,7 +162,7 @@ public class PersonDao
      *
      * @param personID of the person
      */
-    public void deletePerson(String personID)
+    public void deletePerson(String personID) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -174,17 +171,14 @@ public class PersonDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deletePerson():" + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Person deleted successfully");
-
     }
 
     /**
      * deletes all of the persons in the database
      */
-    public void deleteAllPersons()
+    public void deleteAllPersons() throws DaoException
     {
         Statement stmt = null;
         try {
@@ -193,10 +187,7 @@ public class PersonDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteAllPersons(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All Persons deleted successfully");
-
     }
 }

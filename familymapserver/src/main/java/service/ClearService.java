@@ -18,6 +18,7 @@ public class ClearService
      */
     public ClearResult serve(ClearRequest request)
     {
+        
         ClearResult result = null;
         return result;
     }

@@ -22,17 +22,24 @@ public class DaoManager
     /**
      * creates a DoaManager object
      */
-    public DaoManager()
+    public DaoManager() throws DaoException
     {
-        this.OpenSqlSession();
-        uDao = new UserDao(c);
-        pDao = new PersonDao(c);
-        eDao = new EventDao(c);
-        aDao = new AuthTokenDao(c);
+        try
+        {
+            this.OpenSqlSession();
+            uDao = new UserDao(c);
+            pDao = new PersonDao(c);
+            eDao = new EventDao(c);
+            aDao = new AuthTokenDao(c);
+        }
+        catch(DaoException e)
+        {
+            throw new DaoException(e.getFunction());
+        }
 
     }
 
-    public void createFamilyMapTables()
+    public void createFamilyMapTables() throws DaoException
     {
         Statement stmt = null;
         try {
@@ -74,55 +81,56 @@ public class DaoManager
             stmt.close();
 
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            //System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            //System.exit(0);
+            throw new DaoException("createFamilyMapTables(): " + e.getClass().getName() + ": " + e.getMessage());
         }
-        System.out.println("Table created successfully");
     }
 
     /**
      * opens a session in SQL
      */
-    private void OpenSqlSession()
+    private void OpenSqlSession() throws DaoException
     {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:database/FamilyMap.db");
             c.setAutoCommit(true);
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("closeSqlSession(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Opened database successfully");
-        
     }
 
     /**
      *  closes a session in SQL
      */
-    public void closeSqlSession()
+    public void closeSqlSession() throws DaoException
     {
         try
         {
             this.c.close();
-            System.out.println("Closed database successfully");
-
         }
         catch ( Exception e )
         {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
+            throw new DaoException("closeSqlSession(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
     }
 
     /**
      * deletes everything in the database
      */
-    public void deleteAll()
+    public void deleteAll() throws DaoException
     {
-        aDao.deleteAllTokens();
-        pDao.deleteAllPersons();
-        uDao.deleteAllUsers();
-        eDao.deleteAllEvents();
+        try
+        {
+            aDao.deleteAllTokens();
+            pDao.deleteAllPersons();
+            uDao.deleteAllUsers();
+            eDao.deleteAllEvents();
+        }
+        catch(DaoException e)
+        {
+            throw new DaoException("deleteALL() - " + e.getFunction());
+        }
     }
 }

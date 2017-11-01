@@ -23,7 +23,7 @@ public class UserDao
      *
      * @param user user model being created
      */
-    public void addUser(User user)
+    public void addUser(User user) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -37,10 +37,8 @@ public class UserDao
         }
         catch ( Exception e )
         {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("addUser():" + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("User added successfully");
     }
 
 
@@ -49,11 +47,18 @@ public class UserDao
      *
      * @param users array of users being imported
      */
-    public void importUsers(User[] users)
+    public void importUsers(User[] users) throws DaoException
     {
-        for(int i = 0; i < users.length; i++)
+        try
         {
-            this.addUser(users[i]);
+            for (int i = 0; i < users.length; i++) {
+                this.addUser(users[i]);
+            }
+        }
+        catch(DaoException e)
+        {
+            throw new DaoException("importUser() - " + e.getFunction());
+
         }
     }
 
@@ -64,7 +69,7 @@ public class UserDao
      * @param password password being checked
      * @return  true if the username and password are valid
      */
-    public boolean checkNameAndPassword(String username, String password)
+    public boolean checkNameAndPassword(String username, String password) throws DaoException
     {
         boolean valid = false;
         Statement stmt = null;
@@ -87,10 +92,8 @@ public class UserDao
             rs.close();
             stmt.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("checkNameAndPassword():" + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Username and Password Authentication Successfull");
         return valid;
     }
 
@@ -100,9 +103,27 @@ public class UserDao
      * @param username username of user
      * @return returns the user object
      */
-    public User getUser(String username)
+    public User getUser(String username) throws DaoException
     {
         User user = null;
+        PreparedStatement prepared = null;
+        try
+        {
+            prepared = c.prepareStatement("SELECT * FROM Users WHERE Username = ?;");
+            prepared.setString(1, username);
+            ResultSet rs = prepared.executeQuery();
+            String username_ = rs.getString("Username");
+            String password_ = rs.getString("Password");
+            String email_ = rs.getString("Email");
+            String personID_ = rs.getString("PersonID");
+            user = new User(username_,password_,email_,personID_);
+            rs.close();
+            prepared.close();
+        }
+        catch ( Exception e )
+        {
+            throw new DaoException("getUser():" + e.getClass().getName() + ": " + e.getMessage() );
+        }
         return user;
     }
 
@@ -111,7 +132,7 @@ public class UserDao
      *
      * @param username username of the user that will be deleted
      */
-    public void deleteUser(String username)
+    public void deleteUser(String username) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -120,17 +141,14 @@ public class UserDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteUser(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("User deletion successfully");
-
     }
 
     /**
      * deletes all of the users in the database
      */
-    public void deleteAllUsers()
+    public void deleteAllUsers() throws DaoException
     {
 
         Statement stmt = null;
@@ -140,11 +158,7 @@ public class UserDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteAllUsers():" + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All Users deleted successfully");
-
-
     }
 }

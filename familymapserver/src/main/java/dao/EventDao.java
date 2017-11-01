@@ -25,7 +25,7 @@ public class EventDao
      *
      * @param event event object being created
      */
-    public void addEvent(Event event)
+    public void addEvent(Event event) throws DaoException
     {
         Statement stmt = null;
         try
@@ -41,10 +41,8 @@ public class EventDao
         }
         catch ( Exception e )
         {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("addEvent(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Event added successfully");
     }
 
     /**
@@ -52,13 +50,18 @@ public class EventDao
      *
      * @param events array of events
      */
-    public void importEvents(Event[] events)
-    {
-        for(int i = 0; i < events.length; i++)
+    public void importEvents(Event[] events) throws DaoException
+    {   try
         {
-            this.addEvent(events[i]);
+              for (int i = 0; i < events.length; i++)
+              {
+                  this.addEvent(events[i]);
+              }
         }
-
+        catch(DaoException e)
+        {
+            throw new DaoException("importEvents() - " + e.getFunction());
+        }
     }
 
     /**
@@ -67,7 +70,7 @@ public class EventDao
      * @param username the username of the user
      * @return all of the events associated with that user
      */
-    public  Event[] getUserEvents(String username)
+    public  Event[] getUserEvents(String username) throws DaoException
     {
         Event[] events= null;
         PreparedStatement prepared = null;
@@ -100,10 +103,8 @@ public class EventDao
             rs.close();
             prepared.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("getUserEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All user events retrieved successfully");
         return events;
     }
 
@@ -113,7 +114,7 @@ public class EventDao
      * @param personID ID of the person
      * @return array of events
      */
-    public Event[] getPersonEvents(String personID)
+    public Event[] getPersonEvents(String personID) throws DaoException
     {
         Event[] events= null;
         PreparedStatement prepared = null;
@@ -146,10 +147,8 @@ public class EventDao
             rs.close();
             prepared.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("getPersonEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All person events retrieved successfully");
         return events;
     }
 
@@ -159,7 +158,7 @@ public class EventDao
      * @param eventID ID for that event
      * @return the event object
      */
-    public Event getEvent(String eventID)
+    public Event getEvent(String eventID) throws DaoException
     {
         Event event = null;
         PreparedStatement prepared = null;
@@ -183,10 +182,8 @@ public class EventDao
         }
         catch ( Exception e )
         {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("getEvent(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Event retrieved successfully");
         return event;
     }
 
@@ -195,7 +192,7 @@ public class EventDao
      *
      * @param username the username of the user
      */
-    public void deleteUserEvents(String username)
+    public void deleteUserEvents(String username) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -204,10 +201,8 @@ public class EventDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteUserEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All user events deleted successfully");
     }
 
     /**
@@ -215,7 +210,7 @@ public class EventDao
      *
      * @param personID the ID for that person
      */
-    public void deletePersonEvents(String personID)
+    public void deletePersonEvents(String personID) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -224,11 +219,8 @@ public class EventDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deletePersonEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Person events deleted successfully");
-
     }
 
     /**
@@ -236,7 +228,7 @@ public class EventDao
      *
      * @param eventID the id for that event
      */
-    public void deleteEvent(String eventID)
+    public void deleteEvent(String eventID) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -245,17 +237,14 @@ public class EventDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteEvent(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Event deleted successfully");
-
     }
 
     /**
      * deletes all of the events in the database
      */
-    public void deleteAllEvents()
+    public void deleteAllEvents() throws DaoException
     {
         Statement stmt = null;
         try {
@@ -264,11 +253,7 @@ public class EventDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteAllEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All Events deleted successfully");
-
     }
-
 }

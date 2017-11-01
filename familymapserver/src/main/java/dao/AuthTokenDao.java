@@ -24,7 +24,7 @@ public class AuthTokenDao
      *
      * @param token the token object
      */
-    public void addToken(AuthToken token)
+    public void addToken(AuthToken token) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -37,10 +37,8 @@ public class AuthTokenDao
         }
         catch ( Exception e )
         {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("addToken(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Token added successfully");
     }
 
     /**
@@ -50,7 +48,7 @@ public class AuthTokenDao
      * @param tokenModel token object
      * @return true it is authorized
      */
-    public boolean checkAuthorization(AuthToken tokenModel)
+    public boolean checkAuthorization(AuthToken tokenModel) throws DaoException
     {
 
         boolean authorized = false;
@@ -83,10 +81,8 @@ public class AuthTokenDao
             rs.close();
             stmt.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("checkAuthorization(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Checking Authorization is Successfull");
         return authorized;
     }
 
@@ -96,7 +92,7 @@ public class AuthTokenDao
      *
      *  @param token the authorization token being deleted
      */
-    public void deleteToken(String token)
+    public void deleteToken(String token) throws DaoException
     {
         Statement stmt = null;
         try {
@@ -105,16 +101,14 @@ public class AuthTokenDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteToken(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Token deletion successfull");
     }
 
     /**
      * deletes all of the authorization tokens in the database
      */
-    public void deleteAllTokens()
+    public void deleteAllTokens() throws DaoException
     {
         Statement stmt = null;
         try {
@@ -123,16 +117,14 @@ public class AuthTokenDao
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("deleteAllTokens(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("All Tokens deleted successfully");
     }
 
     /**
      *  Deletes all the tokens that are expired
      */
-    public void refreshTokens()
+    public void refreshTokens() throws DaoException
     {
         boolean authorized = false;
         Statement stmt = null;
@@ -153,10 +145,8 @@ public class AuthTokenDao
             rs.close();
             stmt.close();
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+            throw new DaoException("refreshTokens(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
-        System.out.println("Expired token deletion is Successfull");
     }
 
     /**
