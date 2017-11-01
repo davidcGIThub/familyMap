@@ -1,6 +1,7 @@
 package dao;
 import java.sql.*;
 import model.AuthToken;
+import java.sql.Timestamp;
 
 /**
  * Created by dc1992 on 10/12/17.
@@ -8,7 +9,8 @@ import model.AuthToken;
 
 public class AuthTokenDao
 {
-    Connection c;
+    private final int hour = 3600000;
+    private Connection c;
     /**
      * creates an authorization token object
      */
@@ -22,22 +24,70 @@ public class AuthTokenDao
      *
      * @param token the token object
      */
-    public void createToken(AuthToken token)
+    public void addToken(AuthToken token)
     {
-
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "INSERT INTO Tokens (Token, Username, TimeStamp) " +
+                    "VALUES ('" + token.getToken() + "', '" + token.getUsername() + "', '" + token.getTimeStamp() + "');";
+            stmt.executeUpdate(sql);
+            stmt.close();
+            //c.commit(); it is in autocommit mode
+        }
+        catch ( Exception e )
+        {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Token added successfully");
     }
 
     /**
      * checks the authorization of the token with the username,
      * if the timestamp is expired it deletes the authToken in the database
      *
-     * @param token token object
+     * @param tokenModel token object
      * @return true it is authorized
      */
-    public boolean checkAuthorization(AuthToken token)
+    public boolean checkAuthorization(AuthToken tokenModel)
     {
-        boolean auth = true;
-        return auth;
+
+        boolean authorized = false;
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Tokens;" );
+
+            while ( rs.next() )
+            {
+                String token_ = rs.getString("Token");
+                String username_ = rs.getString("Username");
+                String timeStamp_ = rs.getString("TimeStamp");
+
+                if(token_.equals(tokenModel.getToken()) && username_.equals(tokenModel.getUsername()))
+                {
+                    if(isExpired(timeStamp_))
+                    {
+                        authorized = false;
+                        deleteToken(token_);
+                    }
+                    else
+                    {
+                        authorized = true;
+                    }
+                    break;
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Checking Authorization is Successfull");
+        return authorized;
     }
 
 
@@ -46,9 +96,19 @@ public class AuthTokenDao
      *
      *  @param token the authorization token being deleted
      */
-    public void deleteToken(AuthToken token)
+    public void deleteToken(String token)
     {
-
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "DELETE from Tokens where Token='" + token + "';";
+            stmt.executeUpdate(sql);
+            //c.commit(); autocommit mode
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("Token deletion successfull");
     }
 
     /**
@@ -56,6 +116,44 @@ public class AuthTokenDao
      */
     public void deleteAllTokens()
     {
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "DELETE from Tokens;";
+            stmt.executeUpdate(sql);
+            //c.commit(); autocommit mode
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("All Tokens deleted successfully");
+    }
 
+    /**
+     *  Deletes all the tokens that are expired
+     */
+    public void refreshTokens()
+    {
+
+    }
+
+    /**
+     * checks to see if the timestamp given is expired, longer than an hour
+     *
+     * @param time this is the timestamp given
+     *
+     * @return expired
+     */
+    private boolean isExpired(String time)
+    {
+        boolean expired = false;
+
+        Timestamp tokenTimeStamp = Timestamp.valueOf(time);
+        Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
+        if( (currentTimeStamp.getTime() - tokenTimeStamp.getTime()) > hour )
+        {
+            expired = true;
+        }
+        return expired;
     }
 }

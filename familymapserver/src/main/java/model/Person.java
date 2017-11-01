@@ -47,12 +47,16 @@ public class Person {
      * @param lnam set the last name of the person
      * @param gen  set the gender of the person
      */
-    public Person(String ID, String desc, String fnam, String lnam, String gen) {
+    public Person(String ID, String desc, String fnam, String lnam, String gen, String fa, String ma, String spo)
+    {
         personID = ID;
         descendant = desc;
         firstName = fnam;
         lastName = lnam;
         gender = gen;
+        father = fa;
+        mother = ma;
+        spouse = spo;
     }
 
     /**

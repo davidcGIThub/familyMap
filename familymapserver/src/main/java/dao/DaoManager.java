@@ -9,9 +9,9 @@ import java.sql.*;
 public class DaoManager
 {
     /** connection that will be stored by this Dao Manager*/
-    Connection c;
+    private Connection c;
     /** authorization token data access object */
-    public AuthTokenDao authDao;
+    public AuthTokenDao aDao;
     /** event data access object */
     public EventDao eDao;
     /** person data access object */
@@ -26,6 +26,9 @@ public class DaoManager
     {
         this.OpenSqlSession();
         uDao = new UserDao(c);
+        pDao = new PersonDao(c);
+        eDao = new EventDao(c);
+        aDao = new AuthTokenDao(c);
 
     }
 
@@ -63,9 +66,9 @@ public class DaoManager
                     " PersonID text not null); " +
 
                     " CREATE TABLE Tokens " +
-                    " (Tokens text not null primary key, " +
+                    " (Token text not null primary key, " +
                     " Username text not null, " +
-                    " TimeStamp text not null); ";
+                    " TimeStamp String not null); ";
 
             stmt.executeUpdate(sql);
             stmt.close();
@@ -133,5 +136,6 @@ public class DaoManager
             System.exit(0);
         }
         System.out.println("Deleted all data successfully");
+        this.createFamilyMapTables();
     }
 }

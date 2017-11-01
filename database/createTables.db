@@ -35,9 +35,9 @@ create table Users
 
 create table Tokens
 (
-    Tokens text not null primary key,
+    Token text not null primary key,
     Username text not null,
-    TimeStamp text not null
+    TimeStamp int not null
 );
 
 

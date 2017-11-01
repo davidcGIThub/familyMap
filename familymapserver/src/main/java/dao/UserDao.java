@@ -8,7 +8,7 @@ import model.User;
 
 public class UserDao
 {
-    Connection c;
+    private Connection c;
 
     /**
      * creates a user Dao constructor
@@ -113,6 +113,17 @@ public class UserDao
      */
     public void deleteUser(String username)
     {
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "DELETE from Users where Username='" + username + "';";
+            stmt.executeUpdate(sql);
+            //c.commit(); autocommit mode
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("User deletion successfully");
 
     }
 
@@ -121,6 +132,19 @@ public class UserDao
      */
     public void deleteAllUsers()
     {
+
+        Statement stmt = null;
+        try {
+            stmt = c.createStatement();
+            String sql = "DELETE from Users;";
+            stmt.executeUpdate(sql);
+            //c.commit(); autocommit mode
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+        }
+        System.out.println("All Users deleted successfully");
+
 
     }
 }

@@ -39,7 +39,7 @@ public class Event
      * @param eventType     event type being set
      */
 
-    public Event(String eventID, String descendant, String personID, double latitude, double longitude, String country, String city, int year, String eventType)
+    public Event(String eventID, String descendant, String personID, double latitude, double longitude, String country, String city, String eventType, int year)
     {
         this.eventID = eventID;
         this.descendant = descendant;

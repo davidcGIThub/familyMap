@@ -81,7 +81,7 @@ public class AuthToken
      *
      * @return timestamp
      */
-    public String getTimestamp()
+    public String getTimeStamp()
     {
         return timestamp;
     }
