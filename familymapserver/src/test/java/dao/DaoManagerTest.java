@@ -9,30 +9,67 @@ import static org.junit.Assert.*;
 /**
  * Created by david on 11/1/17.
  */
-public class DaoManagerTest {
-    @Before
-    public void setUp() throws Exception {
 
+public class DaoManagerTest
+{
+    private DaoManager man;
+
+    @Before
+    public void setUp() throws Exception
+    {
+        System.out.println("DaoManager Junit Testing:");
+        try
+        {
+            man = new DaoManager();
+            assertTrue(true);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(false);
+        }
     }
 
     @After
-    public void tearDown() throws Exception {
-
+    public void tearDown() throws Exception
+    {
+        try
+        {
+            man.closeSqlSession();
+            assertTrue(true);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(false);
+        }
     }
 
     @Test
-    public void testCreateFamilyMapTables() throws Exception {
-
+    public void testCreateFamilyMapTables() throws Exception
+    {
+        try
+        {
+            man.createFamilyMapTables();
+            assertTrue(true);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(false);
+        }
     }
 
     @Test
-    public void testCloseSqlSession() throws Exception {
-
+    public void testDeleteAll() throws Exception
+    {
+        try
+        {
+            man.deleteAll();
+            assertTrue(true);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(false);
+        }
     }
 
-    @Test
-    public void testDeleteAll() throws Exception {
-
-    }
 
 }
