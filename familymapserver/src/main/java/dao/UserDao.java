@@ -98,6 +98,39 @@ public class UserDao
     }
 
     /**
+     * checks to see if the value is contained in the table
+     *
+     * @param column column that the value pertains to ("Username", "Password", "Email", "PersonID")
+     * @param value being checked
+     * @return  true value is in the table
+     */
+    public boolean checkContains(String column, String value) throws DaoException
+    {
+        boolean valid = false;
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM Users;" );
+
+            while ( rs.next() )
+            {
+                String value_ = rs.getString(column);
+                if(value_.equals(value))
+                {
+                    valid = true;
+                    break;
+                }
+            }
+            rs.close();
+            stmt.close();
+        } catch ( Exception e ) {
+            throw new DaoException("checkNameAndPassword():" + e.getClass().getName() + ": " + e.getMessage() );
+        }
+        return valid;
+    }
+
+    /**
      * gets the user object
      *
      * @param username username of user

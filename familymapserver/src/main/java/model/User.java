@@ -21,7 +21,7 @@ public class User
      * @param username unique username being set
      * @param password  password being set
      * @param email     email being set
-     * @param person    personID being set
+     * @param personID    personID being set
      */
     public User(String username, String password, String email, String personID)
     {
@@ -31,14 +31,6 @@ public class User
         this.personID = personID;
     }
 
-    /**
-     *
-     * constructor that creates a user model object
-     * @param u		set username (String)
-     * @param p		set password (String)
-     * @param e     set email (String)
-     */
-
 
     /**
      * sets the username for the user
@@ -47,7 +39,7 @@ public class User
      */
     public void setUsername(String u)
     {
-
+        this.username = u;
     }
 
     /**
@@ -57,7 +49,7 @@ public class User
      */
     public void setPassword(String p)
     {
-
+        this.password = p;
     }
 
     /**
@@ -67,13 +59,13 @@ public class User
      */
     public void setEmail(String e)
     {
-
+        this.email = e;
     }
 
     /**
      * sets the person object that belongs to this user
      *
-     * @param person person being added
+     * @param personID person being added
      */
     public void setPersonID(String personID)
     {

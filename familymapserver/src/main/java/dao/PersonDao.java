@@ -62,6 +62,27 @@ public class PersonDao
     }
 
     /**
+     * updates that persons family member
+     *
+     * @param member "Father", "Mother", "Spouse"
+     * @param memberID the person ID of the new family member
+     * @param personID the ID of the person who is kin to the new family member
+     */
+    public void updateFamilyMember(String member, String memberID, String personID) throws DaoException
+    {
+        Statement stmt = null;
+        try
+        {
+            stmt = c.createStatement();
+            String sql = "UPDATE Persons set " + member + " = '" + memberID + "' where PersonID=" + personID + ";";
+            stmt.executeUpdate(sql);
+            stmt.close();
+        } catch ( Exception e ) {
+            throw new DaoException("updateFamilyMember(): " + e.getClass().getName() + ": " + e.getMessage() );
+        }
+    }
+
+    /**
      *gets specified person from the database
      *
      * @param personID ID of the person wanted

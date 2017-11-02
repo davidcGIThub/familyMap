@@ -70,6 +70,7 @@ public class EventDao
      * @param username the username of the user
      * @return all of the events associated with that user
      */
+
     public  Event[] getUserEvents(String username) throws DaoException
     {
         Event[] events= null;
@@ -200,7 +201,9 @@ public class EventDao
             String sql = "DELETE from Events where Descendant='" + username + "';";
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
-        } catch ( Exception e ) {
+        }
+        catch ( Exception e )
+        {
             throw new DaoException("deleteUserEvents(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
     }

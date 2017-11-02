@@ -4,17 +4,20 @@ import com.google.gson.Gson;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 import dao.DaoException;
 import dao.DaoManager;
+import jsonManager.Location;
 import jsonManager.Locations;
 import jsonManager.Names;
+import model.Event;
 import model.Person;
 import model.User;
 import result.FillResult;
 import request.FillRequest;
+import java.util.UUID;
 
 
 /**
@@ -41,6 +44,8 @@ public class FillService
     private DaoManager man;
     /** the error response that will be input to the result*/
     private String errorResponse;
+    /** username of the user making the request*/
+    private String username;
 
     /**
      * creates FillService object, initializes data
@@ -88,12 +93,17 @@ public class FillService
      */
     public FillResult serve(FillRequest request)
     {
-        generations = request.getGenerations();
+        this.username = request.getUsername();
+        this.generations = request.getGenerations();
+        if(!checkErrors(username, generations))
+        {
+            FillResult result = new FillResult(persons, events, errorResponse);
+            return result;
+        }
         int gen = 1;
         try
         {
-            String username_ = request.getUsername();
-            User u = man.uDao.getUser(username_);
+            User u = man.uDao.getUser(username);
             Person p = man.pDao.getPerson(u.getPersonID());
             this.serve(gen,p);
         }
@@ -110,10 +120,11 @@ public class FillService
     {
         if(gen <= generations)
         {
-            Person[] parents = generateParents(child,gen);
+            Person[] parents = generateParents(child);
             Person father = parents[0];
             Person mother = parents[1];
-            generateEvents(father.getPersonID(),mother.getPersonID(),child.getPersonID());
+            generateParentEvents(father.getPersonID(),child.getPersonID());
+            generateParentEvents(mother.getPersonID(),child.getPersonID());
             serve(gen+1,father);
             serve(gen+1,mother);
         }
@@ -122,38 +133,218 @@ public class FillService
     /**
      * generates Person objects that can be parents for child
      * adds the parents to the database, and returns them as an array
+     * also increments the persons added by 2
      *
      * @param child the child of the parents being created
-     * @param gen the generation that its on
      */
-    private Person[] generateParents(Person child,int gen)
+    private Person[] generateParents(Person child)
     {
-        //if(gen == generations) if this is the case make the parents null
+        //select descendant
+        String descendant = username;
+        //create father ID
+        UUID uuid = UUID.randomUUID();
+        String fatherID = uuid.toString();
+        //create fathers first name
         Random generator = new Random();
-        int randomIndex = generator.nextInt(fnames.data.length);
-        man.pDao.importPersons(parents);
+        int randomIndex = generator.nextInt(mnames.data.length);
+        String fatherName = mnames.data[randomIndex];
+        //create fathers last name
+        String fatherLastName = child.getLastName();
+        //create mother ID
+        uuid = UUID.randomUUID();
+        String motherID = uuid.toString();
+        //create mothers first name
+        randomIndex = generator.nextInt(fnames.data.length);
+        String motherName = fnames.data[randomIndex];
+        //create mothers last name
+        randomIndex = generator.nextInt(snames.data.length);
+        String motherLastName = snames.data[randomIndex];
+        //assign spouses
+        String fatherSpouse = motherID;
+        String motherSpouse = fatherID;
+        //create person objects
+        Person father = new Person(fatherID,username,fatherName,fatherLastName,"m",null,null,fatherSpouse);
+        Person mother = new Person(motherID,username,motherName,motherLastName,"f",null,null,motherSpouse);
+        Person[] parents = Person[]{father,mother};
+        //upload persons to database
+        try
+        {
+            man.pDao.updateFamilyMember("Father",fatherID,child.getPersonID());
+            man.pDao.updateFamilyMember("Mother",motherID,child.getPersonID());
+            man.pDao.importPersons(parents);
+            this.persons++;
+        }
+        catch(DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
     }
 
     /**
-     * generates events plausible for a couple with the given child
-     * and adds them to the database, also increments the count of
-     * events
+     * generates events plausible for a parent with the given child
+     * and adds them to the database,
      *
-     * @param fatherID the person ID of the father
-     * @param motherID the person ID of the mother
+     * @param parentID the person ID of the parent
      * @param childID their child's birth year
      */
-    private void generateEvents(String fatherID, String motherID, String childID)
+    private void generateParentEvents(String parentID, String childID)
     {
+        try
+        {
+            //determine childs birth year
+            int childBirthYear;
+            Event[] events = man.eDao.getPersonEvents(childID);
+            for(int i = 0; i < events.length; i++)
+            {
+                if (events[i].getEventType().equals("Birth")
+                {
+                    childBirthYear = events[i].getYear();
+                }
+            }
+            //create parent birth year
+            Random generator = new Random();
+            int randomIndex = generator.nextInt(22);
+            randomIndex = randomIndex + 18;
+            int parentBirthYear = childBirthYear - randomIndex;
+            //generate events
+            generateEvent(parentID,"Birth",parentBirthYear);
+            generateEvent(parentID,"Baptism",parentBirthYear);
+            generateEvent(parentID,"Marriage",parentBirthYear);
+            //determine if dead
+            User u = man.uDao.getUser(username);
+            if(childID.equals( u.getPersonID()))
+            {
+                randomIndex = generator.nextInt(10);
+                if (randomIndex < 5)
+                {
+                    generateEvent(parentID,"Death",parentBirthYear);
+                }
+            }
+        }
+        catch(DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
+    }
 
+    /**
+     * generates events for the person object of the user
+     * @param personID
+     */
+    private void generateUserEvents(String personID)
+    {
+        // make birthday reasonable
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        Random generator = new Random();
+        int randomIndex = generator.nextInt(80);
+        year = year - randomIndex;
+        // make events
+        generateEvent(personID, "Birth", year);
+        generateEvent(personID,"Baptism", year);
+        generateEvent(personID,"Marriage",year);
+    }
+
+    /**
+     * generates events for a person with specified person ID
+     * also increments the count of the events
+     *
+     * @param personID the person ID for which the event is being created
+     * @param eventType event type being created "Birth", "Baptism", "Marriage", "Death"
+     * @param birthYear the year this person was born
+     */
+    private void generateEvent(String personID, String eventType, int birthYear)
+    {
+        //create eventID
+        UUID uuid = UUID.randomUUID();
+        String eventID = uuid.toString();
+        //select descendant
+        String descendant = username;
+        //create location
+        Random generator = new Random();
+        int randomIndex = generator.nextInt(locations.data.length);
+        Location location = locations.data[randomIndex];
+        double longitude = location.longitude;
+        double latitude = location.latitude;
+        String country = location.country;
+        String city = location.city;
+        // create dates for events
+        try {
+            int year;
+            switch (eventType) {
+                case "Birth":
+                    year = birthYear;
+                    break;
+                case "Baptism":
+                    randomIndex = generator.nextInt(8);
+                    year = randomIndex + 1;
+                    break;
+                case "Marriage":
+                    Person p = man.pDao.getPerson(personID);
+                    String spouse = p.getSpouse();
+                    if (spouse != null) {
+                        randomIndex = generator.nextInt(40);
+                        year = randomIndex + 18;
+                        Event[] events = man.eDao.getPersonEvents(spouse);
+                        for (int i = 0; i < events.length; i++) {
+                            if (events[i].getEventType().equals("Marriage")) {
+                                longitude = events[i].getLongitude();
+                                latitude = events[i].getLatitude();
+                                country = events[i].getCountry();
+                                city = events[i].getCity();
+                                year = events[i].getYear();
+                            }
+                        }
+                    }
+                    break;
+                case "Death":
+                    randomIndex = generator.nextInt(40);
+                    year = randomIndex + 60;
+                    break;
+                default:
+                    System.err.println("Error: Invalid Event Type");
+            }
+            //initalize event
+            Event event = new Event(eventID, descendant, personID, latitude, longitude, country, city, eventType, year);
+            //add event to database
+            man.eDao.addEvent(event);
+            this.events++;
+        }
+        catch (DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
+    }
+
+    /**
+     * checks to see if inputs the the service are valid, and assigns the error response
+     *
+     * @param username the username requesting the service
+     * @param gen number of generations that will be created, but be nonegative
+     * @return valid
+     */
+    private boolean checkErrors(String username, int gen)
+    {
+        boolean valid = false;
+        try
+        {
+            valid = man.uDao.checkContains("Username", username);
+            if(!valid)
+            {
+                errorResponse = "Fill Service Error: Invalid username";
+                return valid;
+            }
+        }
+        catch(DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
+        if(gen < 0)
+        {
+            valid = false;
+            errorResponse = "Fill Service Error: Invalid generations parameter";
+        }
+        return valid;
     }
 }
 
-
-        //"Fill Service Error: Invalid username";
-        //"Fill Service Error: Invalid generations parameter";
-
-        //"Fill Service Error: Internal Server Error";
-        //"No Errors";
-        //"Fill Service Error: Error Unknown, misuse of setErrorResponse";
 
