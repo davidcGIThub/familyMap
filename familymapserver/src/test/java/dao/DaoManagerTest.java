@@ -34,11 +34,22 @@ public class DaoManagerTest
     {
         try
         {
+            man.deleteAll();
+            assertTrue(true);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(false);
+        }
+
+        try
+        {
             man.closeSqlSession();
             assertTrue(true);
         }
         catch(DaoException e)
         {
+            System.err.println(e. getFunction());
             assertTrue(false);
         }
     }
@@ -48,6 +59,7 @@ public class DaoManagerTest
     {
         try
         {
+            man.deleteTables();
             man.createFamilyMapTables();
             assertTrue(true);
         }
@@ -57,19 +69,6 @@ public class DaoManagerTest
         }
     }
 
-    @Test
-    public void testDeleteAll() throws Exception
-    {
-        try
-        {
-            man.deleteAll();
-            assertTrue(true);
-        }
-        catch(DaoException e)
-        {
-            assertTrue(false);
-        }
-    }
 
 
 }

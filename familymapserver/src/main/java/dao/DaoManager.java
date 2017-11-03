@@ -134,4 +134,28 @@ public class DaoManager
             throw new DaoException("deleteALL() - " + e.getFunction());
         }
     }
+
+    /**
+     *
+     * @throws DaoException
+     */
+     public void deleteTables() throws DaoException
+     {
+         Statement stmt = null;
+         try
+         {
+             stmt = c.createStatement();
+             String sql = "drop table if exists Persons;" +
+                     "drop table if exists Events;" +
+                     "drop table if exists Users;" +
+                     "drop table if exists Tokens;";
+             stmt.executeUpdate(sql);
+             stmt.close();
+             //c.commit(); it is in autocommit mode
+         }
+         catch ( Exception e )
+         {
+             throw new DaoException("deleteTables(): " + e.getClass().getName() + ": " + e.getMessage() );
+         }
+     }
 }

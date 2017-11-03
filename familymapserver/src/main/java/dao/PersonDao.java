@@ -74,7 +74,7 @@ public class PersonDao
         try
         {
             stmt = c.createStatement();
-            String sql = "UPDATE Persons set " + member + " = '" + memberID + "' where PersonID=" + personID + ";";
+            String sql = "UPDATE Persons set " + member + " = '" + memberID + "' where PersonID='" + personID + "';";
             stmt.executeUpdate(sql);
             stmt.close();
         } catch ( Exception e ) {

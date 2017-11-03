@@ -77,7 +77,7 @@ public class Server {
         // When the HttpServer receives an HTTP request containing the
         // "/games/list" URL path, it will forward the request to ListGamesHandler
         // for processing.
-        server.createContext("/games/list", new ListGamesHandler());
+       // server.createContext("/games/list", new ListGamesHandler());
 
         //** "/" - this is for the default handler
         //localhost:8080 type this into browser
@@ -86,7 +86,7 @@ public class Server {
         // When the HttpServer receives an HTTP request containing the
         // "/routes/claim" URL path, it will forward the request to ClaimRouteHandler
         // for processing.
-        server.createContext("/routes/claim", new ClaimRouteHandler());
+       // server.createContext("/routes/claim", new ClaimRouteHandler());
 
         // Log message indicating that the HttpServer is about the start accepting
         // incoming client connections.

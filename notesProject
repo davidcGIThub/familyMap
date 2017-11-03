@@ -1,1 +1,3 @@
 create a contains function for the Dao's that way we can check if there is something in the database, for error checking
+
+title all of the tests

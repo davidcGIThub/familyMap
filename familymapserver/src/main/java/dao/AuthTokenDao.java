@@ -96,23 +96,20 @@ public class AuthTokenDao
      */
     public String getUsername(String authToken) throws DaoException
     {
-        Statement stmt = null;
         String username_ = null;
+        PreparedStatement prepared = null;
+
         try
         {
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery( "SELECT * FROM Tokens;" );
-
-            while ( rs.next() )
+            prepared = c.prepareStatement("SELECT * FROM Tokens WHERE Token = ?;");
+            prepared.setString(1, authToken);
+            ResultSet rs = prepared.executeQuery();
+            String token_ = rs.getString("Token");
+            if(token_.equals(authToken))
             {
-                String token_ = rs.getString("Token");
-                if(token_.equals(authToken))
-                {
-                    username_ = rs.getString("Username");
-                }
+                username_ = rs.getString("Username");
             }
             rs.close();
-            stmt.close();
         } catch ( Exception e ) {
             throw new DaoException("getUsername(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
@@ -149,7 +146,8 @@ public class AuthTokenDao
             String sql = "DELETE from Tokens;";
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
-        } catch ( Exception e ) {
+        } catch ( Exception e )
+        {
             throw new DaoException("deleteAllTokens(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
     }
