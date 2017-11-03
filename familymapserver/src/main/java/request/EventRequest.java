@@ -8,14 +8,17 @@ public class EventRequest
 {
     /** the event ID of the event requested*/
     private String eventID;
-    //* the authorization token for the user and session*/
+    /** the authorization token for the user and session*/
     private String authToken;
+    /** the username of the user making the request*/
+    private String username;
 
     /**creates an eventRequest object*/
-    public EventRequest(String eventID, String authToken)
+    public EventRequest(String eventID, String authToken,String username)
     {
         this.eventID = eventID;
         this.authToken = authToken;
+        this.username = username;
     }
 
     /**
@@ -57,5 +60,25 @@ public class EventRequest
     public void setAuthToken(String authToken)
     {
         this.authToken = authToken;
+    }
+
+    /**
+     * gets the username
+     *
+     * @return username
+     */
+    public String getUsername()
+    {
+        return username;
+    }
+
+    /**
+     * sets the username
+     *
+     * @param username
+     */
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 }

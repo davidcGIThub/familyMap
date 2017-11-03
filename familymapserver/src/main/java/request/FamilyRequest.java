@@ -7,15 +7,18 @@ package request;
 public class FamilyRequest
 {
     /** the authorization token for the user and session*/
-    public String authToken;
+    private String authToken;
+    /** the username of the user requesting their family*/
+    private String username;
 
     /**
      * creates a FamilyRequest Object
      * @param authToken
      */
-    public FamilyRequest(String authToken)
+    public FamilyRequest(String authToken, String username)
     {
         this.authToken = authToken;
+        this.username = username;
     }
 
     /**
@@ -36,5 +39,25 @@ public class FamilyRequest
     public void setAuthToken(String authToken)
     {
         this.authToken = authToken;
+    }
+
+    /**
+     * gets the username
+     *
+     * @return username
+     */
+    public String getUsername()
+    {
+        return username;
+    }
+
+    /**
+     * sets the username
+     *
+     * @param username
+     */
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 }

@@ -1,6 +1,10 @@
 package service;
 
+import dao.DaoException;
+import dao.DaoManager;
+import model.Event;
 import request.UserEventsRequest;
+import result.EventResult;
 import result.UserEventsResult;
 
 /**
@@ -9,6 +13,25 @@ import result.UserEventsResult;
 
 public class ReturnUserEventsService
 {
+
+    /** the Dao manager that will be used for this service, containing a connection*/
+    private DaoManager man;
+    /** the error response that will be input to the result*/
+    private String errorResponse;
+
+    public ReturnUserEventsService()
+    {
+        try
+        {
+            man = new DaoManager();
+        }
+        catch (DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
+        errorResponse = "No Errors";
+    }
+
     /**
      * Returns all events for all family members of the current user. The current user is determined from the provided authorization token
      *
@@ -19,6 +42,29 @@ public class ReturnUserEventsService
     public UserEventsResult serve(UserEventsRequest request)
     {
         UserEventsResult result = null;
+        String authToken = request.getAuthToken();
+        String username = request.getUsername();
+        Event[] events = null;
+
+        if (errorResponse.equals("No Errors"))
+        {
+            try
+            {
+                if (!man.aDao.checkAuthorization(authToken,username))
+                {
+                    errorResponse = "Return User Event Service Error: Invalid authorization";
+                }
+                else
+                {
+                    events = man.eDao.getUserEvents(username);
+                }
+            }
+            catch(DaoException e)
+            {
+                errorResponse = ("Internal Server Error: " + e.getFunction());
+            }
+        }
+        result = new UserEventsResult(events,errorResponse);
         return result;
     }
 }

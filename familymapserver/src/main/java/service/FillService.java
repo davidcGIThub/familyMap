@@ -95,28 +95,30 @@ public class FillService
     {
         this.username = request.getUsername();
         this.generations = request.getGenerations();
-        if(!checkErrors(username, generations))
+        if (errorResponse.equals("No Errors"))
         {
-            FillResult result = new FillResult(persons, events, errorResponse);
-            return result;
+            if (!checkErrors(username, generations))
+            {
+                FillResult result = new FillResult(persons, events, errorResponse);
+                return result;
+            }
+            int gen = 1;
+            try
+            {
+                User u = man.uDao.getUser(username);
+                Person p = man.pDao.getPerson(u.getPersonID());
+                this.serve(gen, p);
+            }
+            catch (DaoException e)
+            {
+                errorResponse = ("Internal Server Error: " + e.getFunction());
+            }
         }
-        int gen = 1;
-        try
-        {
-            User u = man.uDao.getUser(username);
-            Person p = man.pDao.getPerson(u.getPersonID());
-            this.serve(gen,p);
-        }
-        catch(DaoException e)
-        {
-            errorResponse = ("Internal Server Error: " + e.getFunction());
-        }
-
         FillResult result = new FillResult(persons, events, errorResponse);
         return result;
     }
 
-    public FillResult serve(int gen, Person child)
+    public void serve(int gen, Person child)
     {
         if(gen <= generations)
         {
@@ -165,7 +167,7 @@ public class FillService
         //create person objects
         Person father = new Person(fatherID,username,fatherName,fatherLastName,"m",null,null,fatherSpouse);
         Person mother = new Person(motherID,username,motherName,motherLastName,"f",null,null,motherSpouse);
-        Person[] parents = Person[]{father,mother};
+        Person[] parents = new Person[]{father,mother};
         //upload persons to database
         try
         {
@@ -178,6 +180,8 @@ public class FillService
         {
             errorResponse = ("Internal Server Error: " + e.getFunction());
         }
+
+        return parents;
     }
 
     /**
@@ -192,11 +196,11 @@ public class FillService
         try
         {
             //determine childs birth year
-            int childBirthYear;
+            int childBirthYear = 0;
             Event[] events = man.eDao.getPersonEvents(childID);
             for(int i = 0; i < events.length; i++)
             {
-                if (events[i].getEventType().equals("Birth")
+                if (events[i].getEventType().equals("Birth"))
                 {
                     childBirthYear = events[i].getYear();
                 }
@@ -269,7 +273,7 @@ public class FillService
         String city = location.city;
         // create dates for events
         try {
-            int year;
+            int year = 0;
             switch (eventType) {
                 case "Birth":
                     year = birthYear;

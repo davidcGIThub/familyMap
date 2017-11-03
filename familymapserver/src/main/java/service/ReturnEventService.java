@@ -1,5 +1,9 @@
 package service;
 
+import dao.DaoException;
+import dao.DaoManager;
+import model.AuthToken;
+import model.Event;
 import result.EventResult;
 import request.EventRequest;
 
@@ -9,6 +13,24 @@ import request.EventRequest;
 
 public class ReturnEventService
 {
+    /** the Dao manager that will be used for this service, containing a connection*/
+    private DaoManager man;
+    /** the error response that will be input to the result*/
+    private String errorResponse;
+
+    public ReturnEventService()
+    {
+        try
+        {
+            man = new DaoManager();
+        }
+        catch (DaoException e)
+        {
+            errorResponse = ("Internal Server Error: " + e.getFunction());
+        }
+        errorResponse = "No Errors";
+    }
+
     /**
      * Returns the single event object with the specified ID
      *
@@ -17,22 +39,37 @@ public class ReturnEventService
      */
     public EventResult serve(EventRequest request)
     {
-        EventResult result = null;
+        String authToken = request.getAuthToken();
+        String username = request.getUsername();
+        String eventID = request.getEventID();
+        Event event = null;
+
+        if (errorResponse.equals("No Errors"))
+        {
+            try
+            {
+                if (!man.aDao.checkAuthorization(authToken,username))
+                {
+                    errorResponse = "Return Event Service Error: Invalid authorization";
+                }
+                else if (!man.eDao.getEvent(eventID).getDescendant().equals(username))
+                {
+                    errorResponse = "Return Event Service Error: Requested event does not belong to this user";
+                }
+                else
+                {
+                    event = man.eDao.getEvent(eventID);
+                }
+            }
+            catch(DaoException e)
+            {
+                errorResponse = ("Internal Server Error: " + e.getFunction());
+            }
+        }
+        EventResult result = new EventResult(event,errorResponse);
         return result;
+
     }
 }
 
-
-
-        //"Event Service Error: Invalid authorization token";
-
-        //"Event Service Error: Invalid event ID parameter";
-
-        //"Event Service Error: Requested event does not belong to this user";
-
-        //"Event Service Error: Internal Server Error";
-
-        //"No Errors";
-
-        //"Event Service Error: Error Unknown, misuse of setErrorResponse";
 

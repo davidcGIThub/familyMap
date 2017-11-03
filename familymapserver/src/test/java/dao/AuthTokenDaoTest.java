@@ -108,7 +108,16 @@ public class AuthTokenDaoTest {
         man.aDao.addToken(a4);
         man.aDao.addToken(a5);
         man.aDao.refreshTokens();
-        System.out.println("Expired token deletion is Successfull");
+        try
+        {
+            man.aDao.getUsername("token5");
+            assertTrue(false);
+        }
+        catch(DaoException e)
+        {
+            assertTrue(true);
+        }
+
     }
 
 }

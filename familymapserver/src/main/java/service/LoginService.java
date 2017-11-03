@@ -50,39 +50,32 @@ public class LoginService
         String personID = null;
         String authToken = null;
         LoginResult result;
-        try
-        {
-            if (password == null || username == null)
-            {
-                errorResponse = "Login Service Error: Missing Request Property";
-            }
-            else if (man.uDao.checkNameAndPassword(username, password))
-            {
-                //get the personID
-                User u = man.uDao.getUser(username);
-                personID = u.getPersonID();
-                //create an authorization token
-                UUID uuid = UUID.randomUUID();
-                authToken = uuid.toString();
-                Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
-                String timeStamp = currentTimeStamp.toString();
-                AuthToken tok = new AuthToken(authToken,username,timeStamp);
-                man.aDao.addToken(tok);
-                //error response
-                errorResponse =  "No Errors";
-            }
-            else
-            {
-                errorResponse = "Login Service Error: Invalid username or Password";
+        if (errorResponse.equals("No Errors")) {
+            try {
+                if (password == null || username == null) {
+                    errorResponse = "Login Service Error: Missing Request Property";
+                } else if (man.uDao.checkNameAndPassword(username, password)) {
+                    //get the personID
+                    User u = man.uDao.getUser(username);
+                    personID = u.getPersonID();
+                    //create an authorization token
+                    UUID uuid = UUID.randomUUID();
+                    authToken = uuid.toString();
+                    Timestamp currentTimeStamp = new Timestamp(System.currentTimeMillis());
+                    String timeStamp = currentTimeStamp.toString();
+                    AuthToken tok = new AuthToken(authToken, username, timeStamp);
+                    man.aDao.addToken(tok);
+                    //error response
+                    errorResponse = "No Errors";
+                } else {
+                    errorResponse = "Login Service Error: Invalid username or Password";
+                }
+            } catch (DaoException e) {
+                errorResponse = ("Internal Server Error: " + e.getFunction());
             }
         }
-        catch(DaoException e)
-        {
-            errorResponse = ("Internal Server Error: " + e.getFunction());
-        }
-
-        result = new LoginResult(authToken, username, personID, errorResponse);
-        return result;
+            result = new LoginResult(authToken, username, personID, errorResponse);
+            return result;
     }
 }
 

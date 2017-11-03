@@ -56,7 +56,10 @@ public class RegisterService
         String authToken = null;
         String personID = null;
         RegisterResult result = null;
+        if (!errorResponse.equals("No Errors"))
+        {
 
+        }
         if (username == null || password == null || email == null || firstName == null || lastName == null || gender == null)
         {
             errorResponse = "Register Service Error: Missing Request Property";

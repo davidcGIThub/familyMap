@@ -10,6 +10,8 @@ public class PersonRequest
     private String authToken;
     /** the person ID of the person requested*/
     private String personID;
+    /** the username of the user requesting the person */
+    private String username;
 
     /**
      * Creates a Person Request object
@@ -17,10 +19,11 @@ public class PersonRequest
      * @param authToken authorization token of the user
      * @param personID person ID of the person requested
      */
-    public PersonRequest(String authToken, String personID)
+    public PersonRequest(String authToken, String personID, String username)
     {
         this.authToken = authToken;
         this.personID = personID;
+        this.username = username;
     }
 
     /**
@@ -61,5 +64,25 @@ public class PersonRequest
     public void setPersonID(String personID)
     {
         this.personID = personID;
+    }
+
+    /**
+     * gets the username
+     *
+     * @return username
+     */
+    public String getUsername()
+    {
+        return username;
+    }
+
+    /**
+     * sets the username
+     *
+     * @param username
+     */
+    public void setUsername(String username)
+    {
+        this.username = username;
     }
 }
