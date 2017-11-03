@@ -18,8 +18,9 @@ public class PersonRequest
      *
      * @param authToken authorization token of the user
      * @param personID person ID of the person requested
+     * @param username username of the user
      */
-    public PersonRequest(String authToken, String personID, String username)
+    public PersonRequest(String personID, String authToken, String username)
     {
         this.authToken = authToken;
         this.personID = personID;

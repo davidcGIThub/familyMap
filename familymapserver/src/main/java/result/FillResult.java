@@ -20,6 +20,8 @@ public class FillResult
      */
     public FillResult(int numPersons, int numEvents, String errorResponse)
     {
+        this.errorResponse = errorResponse;
+        setSuccessResponse(numPersons,numEvents);
 
     }
 

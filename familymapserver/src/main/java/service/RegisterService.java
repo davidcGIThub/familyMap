@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import dao.DaoException;
 import dao.DaoManager;
+import model.Person;
 import model.User;
 import request.FillRequest;
 import request.LoginRequest;
@@ -83,6 +84,8 @@ public class RegisterService
                     personID = uuid.toString();
                     User u = new User(username,password,email,personID);
                     man.uDao.addUser(u);
+                    Person p = new Person(personID,username,firstName,lastName,gender,null,null,null);
+                    man.pDao.addPerson(p);
                     LoginRequest loginReq = new LoginRequest(username,password);
                     LoginService loginServe = new LoginService();
                     LoginResult loginRes = loginServe.serve(loginReq);

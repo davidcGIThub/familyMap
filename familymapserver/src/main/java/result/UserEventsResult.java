@@ -21,6 +21,7 @@ public class UserEventsResult
      */
     public UserEventsResult(Event[] events, String errorResponse)
     {
+        this.events = events;
         setErrorResponse(errorResponse);
     }
 

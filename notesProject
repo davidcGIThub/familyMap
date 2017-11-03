@@ -1,3 +1,5 @@
 create a contains function for the Dao's that way we can check if there is something in the database, for error checking
 
-title all of the tests
+title all of the tests for the Dao test cases, and the Service test cases.
+
+are the return persons supposed to return yourself as well?

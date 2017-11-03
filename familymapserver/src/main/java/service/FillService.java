@@ -53,6 +53,7 @@ public class FillService
      */
     public FillService()
     {
+
         FileReader fileReader;
         try
         {
@@ -76,7 +77,7 @@ public class FillService
 
         try
         {
-            DaoManager man = new DaoManager();
+            man = new DaoManager();
             errorResponse = "No Errors";
         }
         catch(DaoException e)
@@ -95,26 +96,31 @@ public class FillService
     {
         this.username = request.getUsername();
         this.generations = request.getGenerations();
+        FillResult result = null;
         if (errorResponse.equals("No Errors"))
         {
             if (!checkErrors(username, generations))
             {
-                FillResult result = new FillResult(persons, events, errorResponse);
+                result = new FillResult(persons, events, errorResponse);
                 return result;
             }
             int gen = 1;
             try
             {
                 User u = man.uDao.getUser(username);
-                Person p = man.pDao.getPerson(u.getPersonID());
-                this.serve(gen, p);
+                Person p = man.pDao.getPerson(u.getPersonID()); //saves the person object about to be deleted
+                man.pDao.deleteUserPersons(username); // first delete all information related to that user
+                man.eDao.deleteUserEvents(username); // deletes all information related to that user
+                man.pDao.addPerson(p);
+                generateUserEvents(p.getPersonID());
+                serve(gen,p);
             }
             catch (DaoException e)
             {
                 errorResponse = ("Internal Server Error: " + e.getFunction());
             }
         }
-        FillResult result = new FillResult(persons, events, errorResponse);
+        result = new FillResult(persons, events, errorResponse);
         return result;
     }
 
@@ -245,7 +251,7 @@ public class FillService
         // make events
         generateEvent(personID, "Birth", year);
         generateEvent(personID,"Baptism", year);
-        generateEvent(personID,"Marriage",year);
+        //generateEvent(personID,"Marriage",year);
     }
 
     /**
@@ -258,6 +264,9 @@ public class FillService
      */
     private void generateEvent(String personID, String eventType, int birthYear)
     {
+        int tempBirth = birthYear;
+        Event event = null;
+        int year = 0;
         //create eventID
         UUID uuid = UUID.randomUUID();
         String eventID = uuid.toString();
@@ -272,11 +281,12 @@ public class FillService
         String country = location.country;
         String city = location.city;
         // create dates for events
-        try {
-            int year = 0;
-            switch (eventType) {
+        try
+        {
+            switch (eventType)
+            {
                 case "Birth":
-                    year = birthYear;
+                    year = 0;
                     break;
                 case "Baptism":
                     randomIndex = generator.nextInt(8);
@@ -285,17 +295,21 @@ public class FillService
                 case "Marriage":
                     Person p = man.pDao.getPerson(personID);
                     String spouse = p.getSpouse();
-                    if (spouse != null) {
-                        randomIndex = generator.nextInt(40);
-                        year = randomIndex + 18;
+                    randomIndex = generator.nextInt(40);
+                    year = randomIndex + 18;
+                    if (spouse != null)
+                    {
                         Event[] events = man.eDao.getPersonEvents(spouse);
-                        for (int i = 0; i < events.length; i++) {
-                            if (events[i].getEventType().equals("Marriage")) {
+                        for (int i = 0; i < events.length; i++)
+                        {
+                            if (events[i].getEventType().equals("Marriage"))
+                            {
                                 longitude = events[i].getLongitude();
                                 latitude = events[i].getLatitude();
                                 country = events[i].getCountry();
                                 city = events[i].getCity();
                                 year = events[i].getYear();
+                                tempBirth = 0;
                             }
                         }
                     }
@@ -308,7 +322,7 @@ public class FillService
                     System.err.println("Error: Invalid Event Type");
             }
             //initalize event
-            Event event = new Event(eventID, descendant, personID, latitude, longitude, country, city, eventType, year);
+            event = new Event(eventID, descendant, personID, latitude, longitude, country, city, eventType, tempBirth + year);
             //add event to database
             man.eDao.addEvent(event);
             this.events++;

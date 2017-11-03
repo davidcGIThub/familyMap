@@ -51,6 +51,8 @@ public class ReturnPersonService
             {
                 if (!man.aDao.checkAuthorization(authToken,username))
                 {
+                    //test
+                    System.out.println("username: " + username + " authToken: " + authToken);
                     errorResponse = "Return Person Service Error: Invalid authorization";
                 }
                 else if (!man.pDao.getPerson(personID).getDescendant().equals(username))

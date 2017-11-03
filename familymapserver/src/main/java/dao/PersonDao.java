@@ -172,7 +172,8 @@ public class PersonDao
             String sql = "DELETE from Persons where Descendant='" + username + "';";
             stmt.executeUpdate(sql);
             //c.commit(); autocommit mode
-        } catch ( Exception e ) {
+        } catch ( Exception e )
+        {
             throw new DaoException("deleteUserPersons(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
     }
