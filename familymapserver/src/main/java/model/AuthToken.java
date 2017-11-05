@@ -8,8 +8,8 @@ public class AuthToken
 {
     /** unique authorization token generated for a user*/
     private String token;
-    /** the username that uses this token*/
-    private String username;
+    /** the userName that uses this token*/
+    private String userName;
     /** the time that the authorization token was created*/
     private String timestamp;
 
@@ -17,12 +17,12 @@ public class AuthToken
      * creates a AuthToken object
      *
      * @param token     token being set
-     * @param username  username being set
+     * @param userName  userName being set
      */
-    public AuthToken(String token, String username, String timestamp)
+    public AuthToken(String token, String userName, String timestamp)
     {
         this.token = token;
-        this.username = username;
+        this.userName = userName;
         this.timestamp = timestamp;
     }
 
@@ -37,13 +37,13 @@ public class AuthToken
     }
 
     /**
-     * sets the username
+     * sets the userName
      *
-     * @param username username being set
+     * @param username userName being set
      */
     public void setUsername(String username)
     {
-        this.username = username;
+        this.userName = username;
     }
 
     /**
@@ -67,13 +67,13 @@ public class AuthToken
     }
 
     /**
-     * gets the username using this token
+     * gets the userName using this token
      *
-     * @return username
+     * @return userName
      */
     public String getUsername()
     {
-        return username;
+        return userName;
     }
 
     /**

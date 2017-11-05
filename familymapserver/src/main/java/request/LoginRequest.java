@@ -6,32 +6,32 @@ package request;
 
 public class LoginRequest
 {
-    /** the username of the user*/
-    private String username;
+    /** the userName of the user*/
+    private String userName;
     /** the password of the user*/
     private String password;
 
     /**
      * creates a LoginRequest object
      *
-     * @param username the username of the user
+     * @param userName the userName of the user
      * @param password the password of the user
      */
-    public LoginRequest(String username, String password)
+    public LoginRequest(String userName, String password)
     {
-        this.username = username;
+        this.userName = userName;
         this.password = password;
     }
 
 
     /**
-     * gets the username of the user
+     * gets the userName of the user
      *
-     * @return username
+     * @return userName
      */
     public String getUsername()
     {
-        return username;
+        return userName;
     }
 
     /**
@@ -45,13 +45,13 @@ public class LoginRequest
     }
 
     /**
-     *sets the username
+     *sets the userName
      *
-     * @param username the username of the user
+     * @param username the userName of the user
      */
     public void setUsername(String username)
     {
-        this.username = username;
+        this.userName = username;
     }
 
     /**

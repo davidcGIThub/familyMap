@@ -63,12 +63,10 @@ public class ReturnPersonServiceTest
         AuthToken a2 = new AuthToken("tok2","username2",timeCurrent);
         man.aDao.addToken(a1);
         man.aDao.addToken(a2);
-
-
-        LoadRequest loadRequest = new LoadRequest(u,p,e);
-        LoadService loadService = new LoadService();
-        loadService.serve(loadRequest);
-        personRequest = new PersonRequest("personID3","tok2","username2");
+        man.eDao.importEvents(e);
+        man.uDao.importUsers(u);
+        man.pDao.importPersons(p);
+        personRequest = new PersonRequest("personID3","tok2");
         personService = new ReturnPersonService();
 
 

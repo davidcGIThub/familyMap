@@ -5,6 +5,7 @@ import dao.DaoManager;
 import model.Event;
 import model.Person;
 import model.User;
+import request.ClearRequest;
 import request.LoadRequest;
 import result.LoadResult;
 
@@ -49,6 +50,10 @@ public class LoadService
         int numPersons = 0;
         int numEvents = 0;
         int numUsers = 0;
+
+        ClearRequest clearRequest = new ClearRequest();
+        ClearService clearService = new ClearService();
+        clearService.serve(clearRequest);
 
         if (!errorResponse.equals("No Errors"))
         {

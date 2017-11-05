@@ -6,8 +6,8 @@ package model;
 /**this class stores accessible information about the user8*/
 public class User
 {
-    /**unique username for the user */
-    private String username;
+    /**unique userName for the user */
+    private String userName;
     /** password for the user */
     private String password;
     /** email address for the user*/
@@ -18,14 +18,14 @@ public class User
     /**
      * creates a user object
      *
-     * @param username unique username being set
+     * @param userName unique userName being set
      * @param password  password being set
      * @param email     email being set
      * @param personID    personID being set
      */
-    public User(String username, String password, String email, String personID)
+    public User(String userName, String password, String email, String personID)
     {
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.email = email;
         this.personID = personID;
@@ -33,13 +33,13 @@ public class User
 
 
     /**
-     * sets the username for the user
+     * sets the userName for the user
      *
-     * @param u     username being added
+     * @param u     userName being added
      */
     public void setUsername(String u)
     {
-        this.username = u;
+        this.userName = u;
     }
 
     /**
@@ -73,13 +73,13 @@ public class User
     }
 
     /**
-     * gets the username of the user
+     * gets the userName of the user
      *
-     * @return      username
+     * @return      userName
      */
     public String getUsername()
     {
-        return username;
+        return userName;
     }
 
     /**

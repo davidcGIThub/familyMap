@@ -40,7 +40,7 @@ public class ReturnEventService
     public EventResult serve(EventRequest request)
     {
         String authToken = request.getAuthToken();
-        String username = request.getUsername();
+        String username = null;
         String eventID = request.getEventID();
         Event event = null;
 
@@ -48,17 +48,21 @@ public class ReturnEventService
         {
             try
             {
-                if (!man.aDao.checkAuthorization(authToken,username))
+                if(man.aDao.checkAuthorization(authToken))
                 {
-                    errorResponse = "Return Event Service Error: Invalid authorization";
-                }
-                else if (!man.eDao.getEvent(eventID).getDescendant().equals(username))
-                {
-                    errorResponse = "Return Event Service Error: Requested event does not belong to this user";
+                    username = man.aDao.getUsername(authToken);
+                    if(!man.eDao.getEvent(eventID).getDescendant().equals(username))
+                    {
+                        errorResponse = "Return Event Service Error: Requested event does not belong to this user";
+                    }
+                    else
+                    {
+                        event = man.eDao.getEvent(eventID);
+                    }
                 }
                 else
                 {
-                    event = man.eDao.getEvent(eventID);
+                    errorResponse = "Return Event Service Error: Invalid authorization";
                 }
             }
             catch(DaoException e)

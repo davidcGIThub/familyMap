@@ -17,7 +17,7 @@ import com.sun.net.httpserver.*;
 	receives a request containing the "web/" URL path, it calls
 	DefaultHandler.handle() which actually processes the request.
 */
-class DefaultHandler implements HttpHandler
+public class DefaultHandler implements HttpHandler
 {
     // Handles HTTP requests containing the "web/" URL path.
     // The "exchange" parameter is an HttpExchange object, which is
@@ -35,8 +35,12 @@ class DefaultHandler implements HttpHandler
     {
         try
         {
-            String filePathStr = "web/";
+            String filePathStr = "web";
             String relativePathStr = exchange.getRequestURI().getPath();
+//            if(relativePathStr.equals("/"))
+//            {
+//                relativePathStr = "/index.html";
+//            }
             String pathStr = filePathStr + relativePathStr;
             Path filePath = FileSystems.getDefault().getPath(pathStr);
             byte[] fileData = Files.readAllBytes(filePath);

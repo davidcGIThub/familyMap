@@ -7,6 +7,8 @@ import org.junit.Test;
 import java.sql.Timestamp;
 
 import model.AuthToken;
+import request.ClearRequest;
+import service.ClearService;
 
 import static org.junit.Assert.*;
 
@@ -20,6 +22,10 @@ public class AuthTokenDaoTest {
     @Before
     public void setUp() throws Exception
     {
+        ClearRequest clearRequest = new ClearRequest();
+        ClearService clearService = new ClearService();
+        clearService.serve(clearRequest);
+
         man = new DaoManager();
     }
 
@@ -56,17 +62,17 @@ public class AuthTokenDaoTest {
         man.aDao.addToken(a1);
         man.aDao.addToken(a3);
 
-        assertTrue(man.aDao.checkAuthorization(a0.getToken(),a0.getUsername()));
-        assertTrue(!man.aDao.checkAuthorization(a1.getToken(),a1.getUsername()));
-        assertTrue(!man.aDao.checkAuthorization(a2.getToken(),a2.getUsername()));
-        assertTrue(man.aDao.checkAuthorization(a3.getToken(),a3.getUsername()));
+        assertTrue(man.aDao.checkAuthorization(a0.getToken()));
+        assertTrue(!man.aDao.checkAuthorization(a1.getToken()));
+        assertTrue(!man.aDao.checkAuthorization(a2.getToken()));
+        assertTrue(man.aDao.checkAuthorization(a3.getToken()));
         man.deleteAll();
     }
 
     @Test
     public void getUsername() throws Exception
     {
-        System.out.println("AuthTokenDao Junit Testing: getUsername()");
+        System.out.println("AuthTokenDao Junit Testing: getUserName()");
 
         AuthToken a1 = new AuthToken("token1", "username1", "2017-10-30 17:43:17.019");
         man.aDao.addToken(a1);

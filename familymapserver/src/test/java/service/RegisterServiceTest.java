@@ -3,6 +3,8 @@ package service;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import request.ClearRequest;
 import request.RegisterRequest;
 
 import static org.junit.Assert.*;
@@ -17,6 +19,10 @@ public class RegisterServiceTest
     @Before
     public void setUp() throws Exception
     {
+        ClearRequest clearRequest = new ClearRequest();
+        ClearService clearService = new ClearService();
+        clearService.serve(clearRequest);
+
         registerRequest = new RegisterRequest("username1","password1","email1","firstname1","firstname2","m");
         registerService = new RegisterService();
     }

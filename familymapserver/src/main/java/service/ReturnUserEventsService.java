@@ -4,7 +4,6 @@ import dao.DaoException;
 import dao.DaoManager;
 import model.Event;
 import request.UserEventsRequest;
-import result.EventResult;
 import result.UserEventsResult;
 
 /**
@@ -43,20 +42,21 @@ public class ReturnUserEventsService
     {
         UserEventsResult result = null;
         String authToken = request.getAuthToken();
-        String username = request.getUsername();
+        String username = null;
         Event[] events = null;
 
         if (errorResponse.equals("No Errors"))
         {
             try
             {
-                if (!man.aDao.checkAuthorization(authToken,username))
+                if(man.aDao.checkAuthorization(authToken))
                 {
-                    errorResponse = "Return User Event Service Error: Invalid authorization";
+                    username = man.aDao.getUsername(authToken);
+                    events = man.eDao.getUserEvents(username);
                 }
                 else
                 {
-                    events = man.eDao.getUserEvents(username);
+                    errorResponse = "Return User Event Service Error: Invalid authorization";
                 }
             }
             catch(DaoException e)

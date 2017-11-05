@@ -41,20 +41,21 @@ public class ReturnFamilyService
     public FamilyResult serve(FamilyRequest request)
     {
         String authToken = request.getAuthToken();
-        String username = request.getUsername();;
+        String username = null;
         Person[] persons = null;
 
         if (errorResponse.equals("No Errors"))
         {
             try
             {
-                if (!man.aDao.checkAuthorization(authToken,username))
+                if(man.aDao.checkAuthorization(authToken))
                 {
-                    errorResponse = "Return Family Service Error: Invalid authorization";
+                    username = man.aDao.getUsername(authToken);
+                    persons = man.pDao.getUserPersons(username);
                 }
                 else
                 {
-                    persons = man.pDao.getUserPersons(username);
+                    errorResponse = "Return Family Service Error: Invalid authorization";
                 }
             }
             catch(DaoException e)

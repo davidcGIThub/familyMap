@@ -65,12 +65,10 @@ public class ReturnUserEventsServiceTest {
             AuthToken a2 = new AuthToken("tok2","username2",timeCurrent);
             man.aDao.addToken(a1);
             man.aDao.addToken(a2);
-
-
-            LoadRequest loadRequest = new LoadRequest(u,p,e);
-            LoadService loadService = new LoadService();
-            loadService.serve(loadRequest);
-            eventsRequest = new UserEventsRequest("tok1","username0");
+            man.eDao.importEvents(e);
+            man.uDao.importUsers(u);
+            man.pDao.importPersons(p);
+            eventsRequest = new UserEventsRequest("tok1");
             eventsService = new ReturnUserEventsService();
         }
         catch(DaoException e)

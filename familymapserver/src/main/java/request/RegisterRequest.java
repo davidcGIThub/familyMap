@@ -6,8 +6,8 @@ package request;
 
 public class RegisterRequest
 {
-    /**the username of the user*/
-    private String username;
+    /**the userName of the user*/
+    private String userName;
     /** the password of the user*/
     private String password;
     /** the email of the user*/
@@ -22,16 +22,16 @@ public class RegisterRequest
     /**
      *Creates a Register Request object
      *
-     * @param username username of the user
+     * @param userName userName of the user
      * @param password password of the user
      * @param email email of the user
      * @param firstname first name of the user
      * @param lastname last name of the user
      * @param gender gender of the user
      */
-    public RegisterRequest(String username, String password, String email, String firstname, String lastname, String gender)
+    public RegisterRequest(String userName, String password, String email, String firstname, String lastname, String gender)
     {
-        this.username = username;
+        this.userName = userName;
         this.password = password;
         this.email = email;
         this.firstname = firstname;
@@ -40,13 +40,13 @@ public class RegisterRequest
     }
 
     /**
-     * gets the username of the user
+     * gets the userName of the user
      *
-     * @return username
+     * @return userName
      */
     public String getUsername()
     {
-        return username;
+        return userName;
     }
 
     /**
@@ -100,13 +100,13 @@ public class RegisterRequest
     }
 
     /**
-     * sets the username
+     * sets the userName
      *
      * @param username user name of the user being set
      */
     public void setUsername(String username)
     {
-        this.username = username;
+        this.userName = username;
     }
 
     /**

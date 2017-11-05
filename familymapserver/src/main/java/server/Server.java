@@ -3,9 +3,13 @@ package server;
  * Created by david on 11/2/17.
  */
 
+import com.sun.net.httpserver.HttpServer;
+
 import java.io.*;
 import java.net.*;
-import com.sun.net.httpserver.*;
+
+import handler.*;
+
 /*
 	This example demonstrates the basic structure of the Family Map Server
 	(although it is for a fictitious "Ticket to Ride" game, not Family Map).
@@ -73,20 +77,23 @@ public class Server {
         // forwards the request to the handler for that URL path.
         System.out.println("Creating contexts");
 
-        // Create and install the HTTP handler for the "/games/list" URL path.
+        // Create and install the HTTP handler for the "/---/" URL path.
         // When the HttpServer receives an HTTP request containing the
-        // "/games/list" URL path, it will forward the request to ListGamesHandler
+        // "/-----/" URL path, it will forward the request to ------Handler
         // for processing.
-       // server.createContext("/games/list", new ListGamesHandler());
+        server.createContext("/fill", new FillHandler());
+        server.createContext("/user/register", new RegisterHandler());
+        server.createContext("/user/login", new LoginHandler());
+        server.createContext("/clear", new ClearHandler());
+        server.createContext("/fill", new FillHandler());
+        server.createContext("/load", new LoadHandler());
+        server.createContext("/person", new PersonHandler());
+        server.createContext("/event", new EventHandler());
+        server.createContext("/fill", new FillHandler());
+        server.createContext("/", new DefaultHandler());
 
         //** "/" - this is for the default handler
         //localhost:8080 type this into browser
-
-        // Create and install the HTTP handler for the "/routes/claim" URL path.
-        // When the HttpServer receives an HTTP request containing the
-        // "/routes/claim" URL path, it will forward the request to ClaimRouteHandler
-        // for processing.
-       // server.createContext("/routes/claim", new ClaimRouteHandler());
 
         // Log message indicating that the HttpServer is about the start accepting
         // incoming client connections.

@@ -42,14 +42,14 @@ public class AuthTokenDao
     }
 
     /**
-     * checks the authorization of the token with the username,
+     * checks the authorization of the token,
      * if the timestamp is expired it deletes the authToken in the database
      *
      * @param authToken the authorization token being checked
-     * @param username the username being checked
+
      * @return true it is authorized
      */
-    public boolean checkAuthorization(String authToken, String username) throws DaoException
+    public boolean checkAuthorization(String authToken) throws DaoException
     {
 
         boolean authorized = false;
@@ -62,10 +62,9 @@ public class AuthTokenDao
             while ( rs.next() )
             {
                 String token_ = rs.getString("Token");
-                String username_ = rs.getString("Username");
                 String timeStamp_ = rs.getString("TimeStamp");
 
-                if(token_.equals(authToken) && username_.equals(username))
+                if(token_.equals(authToken))
                 {
                     if(isExpired(timeStamp_))
                     {
@@ -111,7 +110,7 @@ public class AuthTokenDao
             }
             rs.close();
         } catch ( Exception e ) {
-            throw new DaoException("getUsername(): " + e.getClass().getName() + ": " + e.getMessage() );
+            throw new DaoException("getUserName(): " + e.getClass().getName() + ": " + e.getMessage() );
         }
         return username_;
     }

@@ -41,7 +41,7 @@ public class ReturnPersonService
     public PersonResult serve(PersonRequest request)
     {
         String authToken = request.getAuthToken();
-        String username = request.getUsername();
+        String username = null;
         String personID = request.getPersonID();
         Person person = null;
 
@@ -49,19 +49,21 @@ public class ReturnPersonService
         {
             try
             {
-                if (!man.aDao.checkAuthorization(authToken,username))
+                if(man.aDao.checkAuthorization(authToken))
                 {
-                    //test
-                    System.out.println("username: " + username + " authToken: " + authToken);
-                    errorResponse = "Return Person Service Error: Invalid authorization";
-                }
-                else if (!man.pDao.getPerson(personID).getDescendant().equals(username))
-                {
-                    errorResponse = "Return Person Service Error: Requested person does not belong to this user";
+                    username = man.aDao.getUsername(authToken);
+                    if(!man.pDao.getPerson(personID).getDescendant().equals(username))
+                    {
+                        errorResponse = "Return Person Service Error: Requested person does not belong to this user";
+                    }
+                    else
+                    {
+                        person = man.pDao.getPerson(personID);
+                    }
                 }
                 else
                 {
-                    person = man.pDao.getPerson(personID);
+                    errorResponse = "Return Person Service Error: Invalid authorization";
                 }
             }
             catch(DaoException e)

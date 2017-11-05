@@ -8,8 +8,8 @@ public class LoginResult
 {
     /** the authorization token for the user*/
     private String authToken;
-    /** username of the user*/
-    private String username;
+    /** userName of the user*/
+    private String userName;
     /** the id for the person object of the user*/
     private String personID;
     /** the error response printed to the use*/
@@ -20,14 +20,14 @@ public class LoginResult
      * creates a LoginResult object, and creates the error Response
      *
      * @param authToken the authorization token for the user logging in
-     * @param username the username of the person logging in
+     * @param userName the userName of the person logging in
      * @param personID the person ID for the user logging in
      * @param errorResponse the type of error
      */
-    public LoginResult(String authToken, String username, String personID, String errorResponse)
+    public LoginResult(String authToken, String userName, String personID, String errorResponse)
     {
         this.authToken = authToken;
-        this.username = username;
+        this.userName = userName;
         this.personID = personID;
         setErrorResponse(errorResponse);
     }
@@ -44,13 +44,13 @@ public class LoginResult
     }
 
     /**
-     * sets the username of for the result object
+     * sets the userName of for the result object
      *
-     * @param username the username of the user
+     * @param username the userName of the user
      */
     public void setUsername(String username)
     {
-        this.username = username;
+        this.userName = username;
     }
 
     /**
@@ -74,13 +74,13 @@ public class LoginResult
     }
 
     /**
-     * gets the username
+     * gets the userName
      *
-     * @return username
+     * @return userName
      */
     public String getUsername()
     {
-        return username;
+        return userName;
     }
 
     /**
