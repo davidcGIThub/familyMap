@@ -43,7 +43,6 @@ public class FillServiceTest
         {
             System.out.println(e.getFunction());
         }
-
         fillRequest = new FillRequest(4,"username1");
         fillService = new FillService();
     }
@@ -59,7 +58,7 @@ public class FillServiceTest
     {
         FillResult fillResult = fillService.serve(fillRequest);
         String errorResponse = fillResult.getErrorResponse();
-        assertEquals("No Errors",errorResponse);
+        assertEquals(null,errorResponse);
     }
 
 }

@@ -21,6 +21,14 @@ public class ClearResult
     {
         this.successResponse  = "Clear Service Complete: Clear succeeded";
         this.errorResponse = errorResponse;
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.successResponse = null;
+        }
     }
 
     /**

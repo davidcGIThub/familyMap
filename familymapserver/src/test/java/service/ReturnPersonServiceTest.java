@@ -80,7 +80,7 @@ public class ReturnPersonServiceTest
     @Test
     public void serve() throws Exception {
         PersonResult personResult = personService.serve(personRequest);
-        assertEquals("No Errors", personResult.getErrorResponse());
+        assertEquals(null, personResult.getErrorResponse());
         assertEquals("personID3", personResult.getPerson().getPersonID());
     }
 

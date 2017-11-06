@@ -12,7 +12,7 @@ import model.User;
 import request.ClearRequest;
 import request.LoadRequest;
 import result.LoadResult;
-import result.LoginResult;
+
 
 import static org.junit.Assert.*;
 
@@ -73,7 +73,21 @@ public class LoadServiceTest
     public void serve() throws Exception
     {
         LoadResult loadResult = loadService.serve(loadRequest);
-        assertEquals("No Errors",loadResult.getErrorResponse());
+
+        try
+        {
+            Person per = man.pDao.getPerson("personID3");
+            assertEquals("personID3", per.getPersonID());
+            User use = man.uDao.getUser("username0");
+            assertEquals("username0", use.getUsername());
+            Event eve = man.eDao.getEvent("eventID0");
+            assertEquals("eventID0",eve.getEventID());
+        }
+        catch(DaoException e)
+        {
+            System.out.println(e.getFunction());
+        }
+        assertEquals(null,loadResult.getErrorResponse());
 
     }
 

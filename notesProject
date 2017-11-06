@@ -3,3 +3,24 @@ create a contains function for the Dao's that way we can check if there is somet
 title all of the tests for the Dao test cases, and the Service test cases.
 
 are the return persons supposed to return yourself as well?
+
+fix it so that it doesnt change anything in the database if there is a failure that occurs.
+
+Also make it so that it inputs directly the error response to equal null.
+
+Make it so my service doesnt call any other services but so that my handler does
+
+
+private static DaoManager man = new DaoManager();
+
+public static DaoManager getInstance()
+{
+	return man;
+}
+
+
+DaoManager man = DaoManager.getInstance();
+
+
+
+

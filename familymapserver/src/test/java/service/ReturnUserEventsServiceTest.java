@@ -88,7 +88,7 @@ public class ReturnUserEventsServiceTest {
     public void serve() throws Exception
     {
         UserEventsResult eventsResult = eventsService.serve(eventsRequest);
-        assertEquals("No Errors", eventsResult.getErrorResponse());
+        assertEquals(null, eventsResult.getErrorResponse());
         assertEquals(3, eventsResult.getEvents().length);
 
     }

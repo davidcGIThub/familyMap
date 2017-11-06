@@ -22,6 +22,14 @@ public class FillResult
     {
         this.errorResponse = errorResponse;
         setSuccessResponse(numPersons,numEvents);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.successResponse = null;
+        }
 
     }
 

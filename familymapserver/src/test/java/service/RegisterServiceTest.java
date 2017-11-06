@@ -30,7 +30,7 @@ public class RegisterServiceTest
     @After
     public void tearDown() throws Exception
     {
-        assertEquals("No Errors",registerService.serve(registerRequest).getErrorResponse());
+        assertEquals(null,registerService.serve(registerRequest).getErrorResponse());
     }
 
     @Test

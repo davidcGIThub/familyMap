@@ -25,7 +25,7 @@ public class ClearServiceTest {
     @Test
     public void serve() throws Exception
     {
-        assertEquals("No Errors", clearService.serve(clearRequest).getErrorResponse());
+        assertEquals(null, clearService.serve(clearRequest).getErrorResponse());
     }
 
 }

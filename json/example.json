@@ -39,7 +39,7 @@
   ],
   "events": [
     {
-      "eventType": "started family map",
+      "eventType": "Marriage",
       "personID": "Sheila_Parker",
       "city": "Salt Lake City",
       "country": "United States",
@@ -50,7 +50,7 @@
       "descendant":"sheila"
     },
     {
-      "eventType": "fixed this thing",
+      "eventType": "Birth",
       "personID": "Patrick_Spencer",
       "city": "Provo",
       "country": "United States",

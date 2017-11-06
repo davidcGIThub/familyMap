@@ -24,6 +24,14 @@ public class FamilyResult
     {
         this.persons = persons;
         setErrorResponse(errorResponse);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.persons = null;
+        }
     }
 
 

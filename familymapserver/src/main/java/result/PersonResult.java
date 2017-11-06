@@ -23,6 +23,14 @@ public class PersonResult
     {
         this.person = person;
         setErrorResponse(errorResponse);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.person = null;
+        }
     }
 
     /**

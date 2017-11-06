@@ -25,6 +25,14 @@ public class LoadResult
     {
         setErrorResponse(errorResponse);
         setSuccessResponse(numUsers,numPersons,numEvents);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.successResponse = null;
+        }
     }
 
     /**

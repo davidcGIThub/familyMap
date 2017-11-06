@@ -53,7 +53,7 @@ public class LoginServiceTest
     public void serve() throws Exception
     {
         LoginResult loginResult = loginService.serve(loginRequest);
-        assertEquals("No Errors", loginResult.getErrorResponse());
+        assertEquals(null, loginResult.getErrorResponse());
 
     }
 

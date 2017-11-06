@@ -79,7 +79,7 @@ public class ReturnFamilyServiceTest
     @Test
     public void serve() throws Exception {
         FamilyResult familyResult = familyService.serve(familyRequest);
-        assertEquals("No Errors", familyResult.getErrorResponse());
+        assertEquals(null, familyResult.getErrorResponse());
         assertEquals(2, familyResult.getPersons().length);
     }
 

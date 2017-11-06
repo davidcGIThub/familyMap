@@ -30,6 +30,16 @@ public class LoginResult
         this.userName = userName;
         this.personID = personID;
         setErrorResponse(errorResponse);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.authToken = null;
+            this.userName = null;
+            this.personID = null;
+        }
     }
 
 

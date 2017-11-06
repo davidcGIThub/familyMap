@@ -89,7 +89,7 @@ public class ReturnEventServiceTest {
     public void serve() throws Exception
     {
         EventResult eventResult = eventService.serve(eventRequest);
-        assertEquals("No Errors", eventResult.getErrorResponse());
+        assertEquals(null, eventResult.getErrorResponse());
         assertEquals("country0", eventResult.getEvent().getCountry());
 
     }

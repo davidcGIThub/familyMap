@@ -37,10 +37,10 @@ public class DefaultHandler implements HttpHandler
         {
             String filePathStr = "web";
             String relativePathStr = exchange.getRequestURI().getPath();
-//            if(relativePathStr.equals("/"))
-//            {
-//                relativePathStr = "/index.html";
-//            }
+            if(relativePathStr.equals("/"))
+            {
+                relativePathStr = "/index.html";
+            }
             String pathStr = filePathStr + relativePathStr;
             Path filePath = FileSystems.getDefault().getPath(pathStr);
             byte[] fileData = Files.readAllBytes(filePath);

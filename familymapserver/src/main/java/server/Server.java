@@ -114,8 +114,9 @@ public class Server {
     // "main" method for the server program
     // "args" should contain one command-line argument, which is the port number
     // on which the server should accept incoming client connections.
-    public static void main(String[] args) {
-        String portNumber = args[0]; //could hard code this to port 8080 if wanted to
+    public static void main(String[] args)
+    {
+        String portNumber = "8080";//args[0]; //could hard code this to port 8080 if wanted to
         new Server().run(portNumber);
     }
 }

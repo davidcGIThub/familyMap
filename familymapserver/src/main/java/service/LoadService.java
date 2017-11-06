@@ -46,6 +46,7 @@ public class LoadService
         Person[] persons = request.getPersons();
         Event[] events = request.getEvents();
         User[] users = request.getUsers();
+
         LoadResult result = null;
         int numPersons = 0;
         int numEvents = 0;
@@ -55,29 +56,29 @@ public class LoadService
         ClearService clearService = new ClearService();
         clearService.serve(clearRequest);
 
-        if (!errorResponse.equals("No Errors"))
+        if (errorResponse.equals("No Errors"))
         {
+            if(persons == null || events == null || users == null)
+            {
+                errorResponse = "Load Service Error: Invalid Request Data - missing values";
+            }
+            else
+            {
+                try
+                {
+                    man.pDao.importPersons(persons);
+                    man.eDao.importEvents(events);
+                    man.uDao.importUsers(users);
+                    numPersons = persons.length;
+                    numEvents = events.length;
+                    numUsers = users.length;
+                }
+                catch (DaoException e)
+                {
+                    errorResponse = ("Internal Server Error: " + e.getFunction());
+                }
+            }
 
-        }
-        else if(persons == null || events == null || users == null)
-        {
-            errorResponse = "Load Service Error: Invalid Request Data - missing values";
-        }
-        else
-            {
-            try
-            {
-                man.pDao.importPersons(persons);
-                man.eDao.importEvents(events);
-                man.uDao.importUsers(users);
-                numPersons = persons.length;
-                numEvents = events.length;
-                numUsers = users.length;
-            }
-            catch (DaoException e)
-            {
-                errorResponse = ("Internal Server Error: " + e.getFunction());
-            }
         }
         result = new LoadResult(numUsers,numPersons,numEvents,errorResponse);
         return result;

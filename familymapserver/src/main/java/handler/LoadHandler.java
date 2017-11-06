@@ -13,6 +13,9 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.HttpURLConnection;
 
+import model.Event;
+import model.Person;
+import model.User;
 import request.LoadRequest;
 import result.LoadResult;
 import service.LoadService;

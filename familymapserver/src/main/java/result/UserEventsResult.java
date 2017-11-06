@@ -23,6 +23,14 @@ public class UserEventsResult
     {
         this.events = events;
         setErrorResponse(errorResponse);
+        if(errorResponse.equals("No Errors"))
+        {
+            this.errorResponse = null;
+        }
+        else
+        {
+            this.events = null;
+        }
     }
 
     /**
