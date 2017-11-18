@@ -1,7 +1,12 @@
 package dao;
-import java.sql.*;
-import model.AuthToken;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
+
+import model.AuthToken;
 
 /**
  * Created by dc1992 on 10/12/17.

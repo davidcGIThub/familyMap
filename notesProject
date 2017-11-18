@@ -10,6 +10,10 @@ Also make it so that it inputs directly the error response to equal null.
 
 Make it so my service doesnt call any other services but so that my handler does
 
+On fill, make the spouse of the user's person object get deleted
+
+On fill, give a response of how many people and how many events were added
+
 
 private static DaoManager man = new DaoManager();
 

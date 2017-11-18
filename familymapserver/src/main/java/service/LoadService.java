@@ -25,12 +25,12 @@ public class LoadService
         try
         {
             man = new DaoManager();
+            errorResponse = "No Errors";
         }
         catch (DaoException e)
         {
             errorResponse = ("Internal Server Error: " + e.getFunction());
         }
-        errorResponse = "No Errors";
     }
 
 

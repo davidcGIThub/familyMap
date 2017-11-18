@@ -4,11 +4,8 @@ package request;
  * Created by dc1992 on 10/23/17.
  */
 
-public class PersonRequest {
-    /**
-     * the authorization token of the user
-     */
-    private String authToken;
+public class PersonRequest extends Request
+{
     /**
      * the person ID of the person requested
      */
@@ -21,26 +18,8 @@ public class PersonRequest {
      * @param personID  person ID of the person requested
      */
     public PersonRequest(String personID, String authToken) {
-        this.authToken = authToken;
+        setAuthToken(authToken);
         this.personID = personID;
-    }
-
-    /**
-     * gets the authorization token
-     *
-     * @return authToken
-     */
-    public String getAuthToken() {
-        return authToken;
-    }
-
-    /**
-     * sets the authorization token
-     *
-     * @param authToken the authorization token of the user
-     */
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
     }
 
     /**

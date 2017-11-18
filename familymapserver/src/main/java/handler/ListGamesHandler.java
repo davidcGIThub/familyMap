@@ -1,8 +1,13 @@
 package handler;
 
-import java.io.*;
-import java.net.*;
-import com.sun.net.httpserver.*;
+import com.sun.net.httpserver.Headers;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
 
 /*
 	The ListGamesHandler is the HTTP handler that processes

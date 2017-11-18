@@ -1,12 +1,15 @@
 package handler;
 
-import java.io.*;
-import java.net.*;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpHandler;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import com.sun.net.httpserver.*;
 /*
 	The DefaultHandler is the HTTP handler that processes
 	incoming HTTP requests that contain the "/games/list" URL path.

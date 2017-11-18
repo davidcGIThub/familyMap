@@ -8,7 +8,7 @@ import model.User;
  * Created by dc1992 on 10/13/17.
  */
 
-public class LoadRequest
+public class LoadRequest extends Request
 {
     /** an array of user objects that will be loaded into the database*/
     private User[] users;

@@ -4,7 +4,7 @@ package result;
  * Created by dc1992 on 10/13/17.
  */
 
-public class LoginResult
+public class LoginResult extends Result
 {
     /** the authorization token for the user*/
     private String authToken;

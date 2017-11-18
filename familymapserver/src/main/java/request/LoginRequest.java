@@ -4,7 +4,7 @@ package request;
  * Created by dc1992 on 10/13/17.
  */
 
-public class LoginRequest
+public class LoginRequest extends Request
 {
     /** the userName of the user*/
     private String userName;

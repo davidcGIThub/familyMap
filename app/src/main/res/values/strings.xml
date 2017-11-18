@@ -1,3 +1,24 @@
 <resources>
-    <string name="app_name">MyFamilyMap</string>
+    <string name="app_name">FamilyMap</string>
+    <!--login labels-->
+    <string name="host_label">Server Host:</string>
+    <string name="port_label">Server Port:</string>
+    <string name="user_name_label">User Name:</string>
+    <string name="password_label">Password:</string>
+    <string name="first_name_label">First Name:</string>
+    <string name="last_name_label">Last Name:</string>
+    <string name="email_label">Email:</string>
+    <string name="gender_label">Gender:</string>
+    <string name="sign_in_button">SIGN IN</string>
+    <string name="register_button">REGISTER</string>
+    <!--login hints-->
+    <string name="host_hint"> server hostname</string>
+    <string name="port_hint">server port</string>
+    <string name="user_name_hint">user name</string>
+    <string name="password_hint">password</string>
+    <string name="first_name_hint">first name</string>
+    <string name="last_name_hint">last name</string>
+    <string name="email_hint">email</string>
+    <string name="male_hint">Male:</string>
+    <string name="female_hint">Female:</string>
 </resources>

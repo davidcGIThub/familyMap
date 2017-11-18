@@ -1,0 +1,9 @@
+where do I save the auth token? also can I just hardcode the http server port and host????
+
+What do I do with the returned Data? in the get
+
+Do I have to put a static main method in my client class?
+
+need to make sure that the client writes the proper json files when it gets the request.- meaning I need to get rid of the variable
+
+A

@@ -1,5 +1,7 @@
 package service;
 
+import com.google.gson.Gson;
+
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -8,6 +10,7 @@ import dao.DaoManager;
 import model.AuthToken;
 import model.User;
 import request.LoginRequest;
+import request.Request;
 import result.LoginResult;
 
 /**
@@ -50,7 +53,8 @@ public class LoginService
         String personID = null;
         String authToken = null;
         LoginResult result;
-        if (errorResponse.equals("No Errors")) {
+        if (errorResponse.equals("No Errors"))
+        {
             try {
                 if (password == null || username == null) {
                     errorResponse = "Login Service Error: Missing Request Property";
@@ -67,10 +71,14 @@ public class LoginService
                     man.aDao.addToken(tok);
                     //error response
                     errorResponse = "No Errors";
-                } else {
+                }
+                else
+                {
                     errorResponse = "Login Service Error: Invalid username or Password";
                 }
-            } catch (DaoException e) {
+            }
+            catch (DaoException e)
+            {
                 errorResponse = ("Internal Server Error: " + e.getFunction());
             }
         }

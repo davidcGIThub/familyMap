@@ -19,17 +19,17 @@ public class ReturnPersonService
 
     public ReturnPersonService()
     {
+        errorResponse = null;
         try
         {
             man = new DaoManager();
+            this.errorResponse = "No Errors";
         }
         catch (DaoException e)
         {
-            errorResponse = ("Internal Server Error: " + e.getFunction());
+            this.errorResponse = ("Internal Server Error: " + e.getFunction());
         }
-        errorResponse = "No Errors";
     }
-
 
     /**
      * Returns the person requested by the current user.
@@ -44,8 +44,7 @@ public class ReturnPersonService
         String username = null;
         String personID = request.getPersonID();
         Person person = null;
-
-        if (errorResponse.equals("No Errors"))
+        if (this.errorResponse.equals("No Errors"))
         {
             try
             {
@@ -54,7 +53,7 @@ public class ReturnPersonService
                     username = man.aDao.getUsername(authToken);
                     if(!man.pDao.getPerson(personID).getDescendant().equals(username))
                     {
-                        errorResponse = "Return Person Service Error: Requested person does not belong to this user";
+                        this.errorResponse = "Return Person Service Error: Requested person does not belong to this user";
                     }
                     else
                     {
@@ -63,15 +62,15 @@ public class ReturnPersonService
                 }
                 else
                 {
-                    errorResponse = "Return Person Service Error: Invalid authorization";
+                    this.errorResponse = "Return Person Service Error: Invalid authorization";
                 }
             }
             catch(DaoException e)
             {
-                errorResponse = ("Internal Server Error: " + e.getFunction());
+                this.errorResponse = ("Internal Server Error: " + e.getFunction());
             }
         }
-        PersonResult result = new PersonResult(person,errorResponse);
+        PersonResult result = new PersonResult(person,this.errorResponse);
         return result;
     }
 }

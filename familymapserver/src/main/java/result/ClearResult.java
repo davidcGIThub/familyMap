@@ -4,7 +4,7 @@ package result;
  * Created by dc1992 on 10/13/17.
  */
 
-public class ClearResult
+public class ClearResult extends Result
 {
     /** Success response that will be printed to the user*/
     private String successResponse;

@@ -3,9 +3,8 @@ package service;
 import dao.DaoException;
 import dao.DaoManager;
 import model.Person;
-import result.FamilyResult;
 import request.FamilyRequest;
-import result.PersonResult;
+import result.FamilyResult;
 
 /**
  * Created by dc1992 on 10/13/17.
@@ -23,12 +22,12 @@ public class ReturnFamilyService
         try
         {
             man = new DaoManager();
+            errorResponse = "No Errors";
         }
         catch (DaoException e)
         {
             errorResponse = ("Internal Server Error: " + e.getFunction());
         }
-        errorResponse = "No Errors";
     }
 
     /**

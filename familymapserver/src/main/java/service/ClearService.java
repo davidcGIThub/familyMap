@@ -1,8 +1,9 @@
 package service;
-import result.ClearResult;
-import request.ClearRequest;
-import dao.DaoManager;
+
 import dao.DaoException;
+import dao.DaoManager;
+import request.ClearRequest;
+import result.ClearResult;
 
 /**
  * Created by dc1992 on 10/12/17.

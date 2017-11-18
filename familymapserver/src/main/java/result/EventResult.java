@@ -6,7 +6,7 @@ import model.Event;
  * Created by dc1992 on 10/13/17.
  */
 
-public class EventResult
+public class EventResult extends Result
 {
     /** the event object being returned*/
     private Event event;

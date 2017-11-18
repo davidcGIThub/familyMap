@@ -4,7 +4,7 @@ package request;
  * Created by dc1992 on 10/23/17.
  */
 
-public class FillRequest
+public class FillRequest extends Request
 {
     /** the number of generations that will be created for the user*/
     private int generations;

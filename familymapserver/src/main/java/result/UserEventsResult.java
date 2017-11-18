@@ -6,7 +6,7 @@ import model.Event;
  * Created by dc1992 on 10/13/17.
  */
 
-public class UserEventsResult
+public class UserEventsResult extends Result
 {
     /** an array of events that that are associated with the user*/
     private Event[] events;

@@ -6,7 +6,7 @@ import model.Person;
  * Created by dc1992 on 10/13/17.
  */
 
-public class PersonResult
+public class PersonResult extends Result
 {
     /** the username associated with this person*/
     private Person person;

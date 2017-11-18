@@ -6,7 +6,7 @@ import model.Person;
  * Created by dc1992 on 10/13/17.
  */
 
-public class FamilyResult
+public class FamilyResult extends Result
 {
     /** an array of all the ancestors for the user*/
     Person[] persons;

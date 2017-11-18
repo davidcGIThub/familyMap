@@ -2,10 +2,9 @@ package service;
 
 import dao.DaoException;
 import dao.DaoManager;
-import model.AuthToken;
 import model.Event;
-import result.EventResult;
 import request.EventRequest;
+import result.EventResult;
 
 /**
  * Created by dc1992 on 10/13/17.
@@ -23,12 +22,12 @@ public class ReturnEventService
         try
         {
             man = new DaoManager();
+            errorResponse = "No Errors";
         }
         catch (DaoException e)
         {
             errorResponse = ("Internal Server Error: " + e.getFunction());
         }
-        errorResponse = "No Errors";
     }
 
     /**

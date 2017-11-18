@@ -4,7 +4,7 @@ package result;
  * Created by dc1992 on 10/13/17.
  */
 
-public class FillResult
+public class FillResult extends Result
 {
     /** the success Response printed to the user*/
     private String successResponse;
@@ -59,7 +59,7 @@ public class FillResult
      */
     public void setSuccessResponse(int numPersons, int numEvents)
     {
-        this.successResponse = "Fill Service Complete: Successfully added " + numPersons + " and " + numEvents +  " to the database.";
+        this.successResponse = "Fill Service Complete: Successfully added " + numPersons + " persons and " + numEvents +  " events to the database.";
     }
 
     /**

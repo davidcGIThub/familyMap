@@ -5,8 +5,8 @@ package server;
 
 import com.sun.net.httpserver.HttpServer;
 
-import java.io.*;
-import java.net.*;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 
 import handler.*;
 
