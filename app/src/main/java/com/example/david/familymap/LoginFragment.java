@@ -66,12 +66,16 @@ public class LoginFragment extends android.support.v4.app.Fragment
             public void onClick(View v)
             {
                 // check to see if fields have been entered ???????
+                mSignInButton.setEnabled(false);
+                mRegisterButton.setEnabled(false);
                 DataManager dman = DataManager.getInstance();
                 dman.serverHost = host_;
                 dman.serverPort = port_;
                 LoginRequest request = new LoginRequest(userName_,password_);
                 LoginTask task = new LoginTask(getActivity());
                 task.execute(request);
+                //mSignInButton.setEnabled(true); in order for this to work it needs to be in the async task
+                //mRegisterButton.setEnabled(true);
             }
 
         });
@@ -83,12 +87,16 @@ public class LoginFragment extends android.support.v4.app.Fragment
             public void onClick(View v)
             {
                 // check to see if fields have been entered ???????
+                mSignInButton.setEnabled(false);
+                mRegisterButton.setEnabled(false);
                 DataManager dman = DataManager.getInstance();
                 dman.serverHost = host_;
                 dman.serverPort = port_;
                 RegisterRequest request = new RegisterRequest(userName_, password_, email_, firstName_, lastName_, gender_);
                 RegisterTask task = new RegisterTask(getActivity());
                 task.execute(request);
+                //mSignInButton.setEnabled(true);
+                //mRegisterButton.setEnabled(true);
             }
 
         });

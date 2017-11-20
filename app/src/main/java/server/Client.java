@@ -41,13 +41,13 @@ public class Client
         String serverPort = dman.serverPort;
 
         Result result = null;
-        if (apiOperation.substring(0, 6).equals("/person") || apiOperation.substring(0, 6).equals("/event"))
+        if (apiOperation.substring(0, 7).equals("/person") || apiOperation.substring(0, 6).equals("/event"))
         {
-            getData(serverHost, serverPort, apiOperation, request);
+            result = getData(serverHost, serverPort, apiOperation, request);
         }
         else
         {
-            postData(serverHost, serverPort, apiOperation, request);
+            result = postData(serverHost, serverPort, apiOperation, request);
         }
         return result;
     }
@@ -92,7 +92,7 @@ public class Client
                 InputStream respBody = http.getInputStream();
                 // Extract JSON data from the HTTP response body
                 Reader reader = new InputStreamReader(respBody);
-                if(apiOperation.substring(0,5).equals("/event"))
+                if(apiOperation.substring(0,6).equals("/event"))
                 {
                     if(apiOperation.length() > 6)
                     {
@@ -174,24 +174,21 @@ public class Client
 
                 switch (apiOperation)
                 {
-                    case "/user/register":
-                        result = gson.fromJson(reader, RegisterResult.class);
+                    case "/user/register": result = gson.fromJson(reader, RegisterResult.class);
                         break;
-                    case "/user/login":
-                        result = gson.fromJson(reader, LoginResult.class);
+                    case "/user/login": result = gson.fromJson(reader, LoginResult.class);
                         break;
-                    case "/clear":
-                        result = gson.fromJson(reader, ClearResult.class);
+                    case "/clear": result = gson.fromJson(reader, ClearResult.class);
                         break;
-                    case "/load":
-                        result = gson.fromJson(reader, LoadResult.class);
+                    case "/load": result = gson.fromJson(reader, LoadResult.class);
                         break;
-                    default:
-                        result = gson.fromJson(reader, FillResult.class);
+                    default: result = gson.fromJson(reader, FillResult.class);
+                        break;
                 }
 
             }
-            else {
+            else
+            {
                 // The HTTP response status code indicates an error
                 // occurred, so print out the message from the HTTP response
                 System.out.println("ERROR: " + http.getResponseMessage());

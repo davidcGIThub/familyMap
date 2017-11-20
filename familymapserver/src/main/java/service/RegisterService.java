@@ -51,8 +51,8 @@ public class RegisterService
         String username = request.getUsername();
         String password = request.getPassword();
         String email = request.getEmail();
-        String firstName = request.getEmail();
-        String lastName = request.getEmail();
+        String firstName = request.getFirstname();
+        String lastName = request.getLastname();
         String gender = request.getGender();
         String authToken = null;
         String personID = null;
