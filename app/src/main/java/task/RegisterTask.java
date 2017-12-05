@@ -1,6 +1,7 @@
 package task;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.net.HttpURLConnection;
@@ -22,9 +23,13 @@ import server.Client;
 public class RegisterTask extends AsyncTask<RegisterRequest, Void, String>
 {
     private Context context;
+    private Button signInButton;
+    private Button registerButton;
 
-    public RegisterTask(Context c)
+    public RegisterTask(Context c, Button mSignInButton, Button mRegisterButton)
     {
+        signInButton = mSignInButton;
+        registerButton = mRegisterButton;
         context = c;
     }
 
@@ -52,7 +57,7 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, String>
         }
         else
         {
-            response = "Log In Failed: " + registerResult.getErrorResponse();
+            response = "Register Failed: " + registerResult.getErrorResponse();
         }
 
         return response;
@@ -61,5 +66,7 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, String>
     protected void onPostExecute(String response)
     {
         Toast.makeText(context,response,Toast.LENGTH_LONG).show();
+        signInButton.setEnabled(true);
+        registerButton.setEnabled(true);
     }
 }

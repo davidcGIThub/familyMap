@@ -194,7 +194,7 @@ public class Client
                 System.out.println("ERROR: " + http.getResponseMessage());
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             // An exception was thrown, so display the exception's stack trace
             e.printStackTrace();

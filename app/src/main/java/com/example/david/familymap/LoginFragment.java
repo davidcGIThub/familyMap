@@ -36,8 +36,6 @@ public class LoginFragment extends android.support.v4.app.Fragment
     private RadioGroup genderGroup;
     private Button mSignInButton;
     private Button mRegisterButton;
-    private LoginRequest loginRequest;
-    private RegisterRequest registerRequest;
     private String host_;
     private String port_;
     private String userName_;
@@ -72,10 +70,8 @@ public class LoginFragment extends android.support.v4.app.Fragment
                 dman.serverHost = host_;
                 dman.serverPort = port_;
                 LoginRequest request = new LoginRequest(userName_,password_);
-                LoginTask task = new LoginTask(getActivity());
+                LoginTask task = new LoginTask(getActivity(),mSignInButton, mRegisterButton);
                 task.execute(request);
-                //mSignInButton.setEnabled(true); in order for this to work it needs to be in the async task
-                //mRegisterButton.setEnabled(true);
             }
 
         });
@@ -93,7 +89,7 @@ public class LoginFragment extends android.support.v4.app.Fragment
                 dman.serverHost = host_;
                 dman.serverPort = port_;
                 RegisterRequest request = new RegisterRequest(userName_, password_, email_, firstName_, lastName_, gender_);
-                RegisterTask task = new RegisterTask(getActivity());
+                RegisterTask task = new RegisterTask(getActivity(), mSignInButton, mRegisterButton);
                 task.execute(request);
                 //mSignInButton.setEnabled(true);
                 //mRegisterButton.setEnabled(true);
