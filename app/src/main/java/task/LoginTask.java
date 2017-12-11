@@ -5,16 +5,21 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.david.familymap.MainActivity;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import data.DataManager;
+import request.EventRequest;
 import request.FamilyRequest;
 import request.LoginRequest;
 import request.PersonRequest;
+import request.UserEventsRequest;
 import result.FamilyResult;
 import result.LoginResult;
 import result.PersonResult;
+import result.UserEventsResult;
 import server.Client;
 
 /**
@@ -26,6 +31,7 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, String>
     private Context context;
     private Button signInButton;
     private Button registerButton;
+    private boolean success;
 
     public LoginTask(Context c, Button mSignInButton, Button mRegisterButton)
     {
@@ -43,7 +49,12 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, String>
         String response = null;
 
         DataManager dman = DataManager.getInstance();
-        if(loginResult.getErrorResponse() == null)
+        if(loginResult == null)
+        {
+            response = "Log In Failed: Host Connection Error";
+            success = false;
+        }
+        else if(loginResult.getErrorResponse() == null)
         {
             dman.authToken = loginResult.getAuthToken();
             dman.userPersonID = loginResult.getPersonID();
@@ -55,10 +66,16 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, String>
             FamilyRequest familyRequest = new FamilyRequest(dman.authToken);
             FamilyResult familyResult = (FamilyResult) client.run("/person",familyRequest);
             dman.persons = familyResult.getPersons();
+
+            UserEventsRequest eventsRequest = new UserEventsRequest(dman.authToken);
+            UserEventsResult eventsResult = (UserEventsResult) client.run("/event", eventsRequest);
+            dman.events = eventsResult.getEvents();
+            success = true;
         }
         else
         {
             response = "Log In Failed: " + loginResult.getErrorResponse();
+            success = false;
         }
 
         return response;
@@ -69,5 +86,10 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, String>
         Toast.makeText(context,response,Toast.LENGTH_LONG).show();
         signInButton.setEnabled(true);
         registerButton.setEnabled(true);
+        if(success)
+        {
+            MainActivity activity = (MainActivity) context;
+            activity.switchToMapFragment();
+        }
     }
 }

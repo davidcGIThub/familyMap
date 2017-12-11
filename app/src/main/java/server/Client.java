@@ -41,7 +41,7 @@ public class Client
         String serverPort = dman.serverPort;
 
         Result result = null;
-        if (apiOperation.substring(0, 7).equals("/person") || apiOperation.substring(0, 6).equals("/event"))
+        if (apiOperation.substring(0, 6).equals("/event") || apiOperation.substring(0, 7).equals("/person"))
         {
             result = getData(serverHost, serverPort, apiOperation, request);
         }
@@ -171,7 +171,6 @@ public class Client
                 InputStream respBody = http.getInputStream();
                 // Extract JSON data from the HTTP response body
                 reader = new InputStreamReader(respBody);
-
                 switch (apiOperation)
                 {
                     case "/user/register": result = gson.fromJson(reader, RegisterResult.class);
@@ -185,7 +184,6 @@ public class Client
                     default: result = gson.fromJson(reader, FillResult.class);
                         break;
                 }
-
             }
             else
             {
