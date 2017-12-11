@@ -230,6 +230,10 @@ public class FillService
                     generateEvent(parentID,"Death",parentBirthYear);
                 }
             }
+            else
+            {
+                generateEvent(parentID,"Death",parentBirthYear);
+            }
         }
         catch(DaoException e)
         {

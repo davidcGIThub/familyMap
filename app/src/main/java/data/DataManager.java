@@ -29,4 +29,18 @@ public class DataManager {
         return instance;
     }
 
+    public Person getPerson(String personID)
+    {
+        Person person = null;
+        for(int i = 0; i < persons.length; i++)
+        {
+            if(persons[i].getPersonID().equals(personID))
+            {
+                person = persons[i];
+                break;
+            }
+        }
+        return person;
+    }
+
 }

@@ -10,26 +10,31 @@
         android:id="@+id/mapview"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="450dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         tools:context="com.example.david.familymap.MapFragment" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="0">
         <ImageView
+            android:id="@+id/gender_icon"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:src="@mipmap/ic_launcher"/>
         <LinearLayout
+            android:id="@+id/event_bar"
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-                android:id="@+id/text"
+                android:id="@+id/person_full_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/default_marker" />
             <TextView
+                android:id="@+id/event_details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/default_marker_details" />
