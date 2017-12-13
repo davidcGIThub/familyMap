@@ -39,9 +39,11 @@ public class MapsActivity extends FragmentActivity {
                 (SupportMapFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.map);
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
+        mapFragment.getMapAsync(new OnMapReadyCallback()
+        {
             @Override
-            public void onMapReady(GoogleMap googleMap) {
+            public void onMapReady(GoogleMap googleMap)
+            {
                 map = googleMap;
                 initMap();
             }

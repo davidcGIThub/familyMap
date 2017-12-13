@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -49,34 +51,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         placeEventMarkers();
         //add all the events to the map
         setMarkerListener();
+        setEventBarListener();
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
     {
-        setEventBarListener();
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_maps, container, false);
         fullName = (TextView) v.findViewById(R.id.person_full_name);
         eventDetails = (TextView) v.findViewById(R.id.event_details);
         gender = (ImageView) v.findViewById(R.id.gender_icon);
         lLayout = (LinearLayout) v.findViewById(R.id.event_bar);
+        lLayout.setTag("");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
-        //in case doesnt work try onMapReady as an anonymous function
+        // in case doesnt work try onMapReady as an anonymous function
         return v;
     }
 
-    private void setClickListener() {
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng)
-            {
-                //textView.setText(latLng.toString());
-            }
-        });
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        super.onCreateOptionsMenu(menu, inflater);
     }
+
+    //    private void setClickListener() {
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng)
+//            {
+//                //textView.setText(latLng.toString());
+//            }
+//        });
+//    }
 
     private void setEventBarListener()
     {
@@ -85,17 +94,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View v)
             {
-                Intent intent = new Intent(getActivity(), PersonActivity.class);
-                String personID = (String) lLayout.getTag();
-                intent.putExtra("PERSON_ID", personID);
-                startActivity(intent);
+                String temp = (String) lLayout.getTag();
+
+                if(!temp.equals(""))
+                {
+                    Intent intent = new Intent(getActivity(), PersonActivity.class);
+                    String personID = (String) lLayout.getTag();
+                    intent.putExtra("PERSON_ID", personID);
+                    startActivity(intent);
+                }
             }
         });
-    }
-
-    private void setLayoutListener()
-    {
-
     }
 
     private void setMarkerListener() {
@@ -106,6 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 MarkerTag mtag = (MarkerTag) marker.getTag();
                 Event event = mtag.event;
                 Person person = mtag.person;
+                lLayout.setTag(person.getPersonID());
                 LatLng latlon = new LatLng(mtag.event.getLatitude(),mtag.event.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(latlon));
                 fullName.setText(person.getFirstName() + " " + person.getLastName());
@@ -134,7 +144,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         {
             Event event = dman.events[i];
             Person person = dman.getPerson(dman.events[i].getPersonID());
-            lLayout.setTag(person.getPersonID());
             MarkerTag mtag = new MarkerTag(person,event);
             LatLng latlon = new LatLng(dman.events[i].getLatitude(),dman.events[i].getLongitude());
             switch (dman.events[i].getEventType()) {
