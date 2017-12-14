@@ -51,6 +51,7 @@ public class LoginFragment extends android.support.v4.app.Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(false);
     }
 
     @Override

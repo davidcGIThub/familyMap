@@ -1,9 +1,14 @@
 package com.example.david.familymap;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 //for iconify
 import com.joanzapata.iconify.Iconify;  //for iconify
 import com.joanzapata.iconify.fonts.FontAwesomeModule;
@@ -38,6 +43,35 @@ public class MainActivity extends AppCompatActivity {
         fm.beginTransaction()
                 .add(R.id.fragment_container, fragment)
                 .commit();
+        dman.ORIGINAL_CONTEXT = this;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.map_fragment_toolbar, menu);
+        return false;
+    }
+
+        @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
+            case R.id.map_fragment_search_icon:
+                startSearchActivity();
+                return true;
+            case R.id.map_fragment_filter_icon:
+                startFilterActivity();
+                return true;
+            case R.id.map_fragment_settings_icon:
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return true;
+        }
     }
 
     public void switchToMapFragment()
@@ -47,4 +81,15 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.fragment_container, fragment)
                 .commit();
     }
+
+    private void startSearchActivity()
+    {
+
+    }
+
+    private void startFilterActivity()
+    {
+
+    }
+
 }

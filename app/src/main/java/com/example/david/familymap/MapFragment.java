@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,7 +27,19 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE;
+
+
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import data.DataManager;
 import data.MarkerTag;
@@ -40,6 +53,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private TextView eventDetails;
     private ImageView gender;
     private LinearLayout lLayout;
+    private List<Polyline> polylines = new ArrayList<Polyline>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,10 +62,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        DataManager dman = DataManager.getInstance();
+        mMap.setMapType(dman.mapType);
+
+        Intent intent = getActivity().getIntent();
+        Event selectedEvent = dman.getEvent(intent.getStringExtra("EVENT_ID"));
+        if(selectedEvent != null)
+        {
+            LatLng latlon = new LatLng(selectedEvent.getLatitude(), selectedEvent.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlon));
+            Person selectedPerson = dman.getPerson(selectedEvent.getPersonID());
+            lLayout.setTag(selectedPerson.getPersonID());
+            fullName.setText(selectedPerson.getFirstName() + " " + selectedPerson.getLastName());
+            eventDetails.setText(selectedEvent.getEventType() + ": " + selectedEvent.getCity() + ", " + selectedEvent.getCountry() +
+                    " (" + selectedEvent.getYear() + ")");
+            Drawable drawable;
+            if (selectedPerson.getGender().equals("m")) {
+                drawable = getResources().getDrawable(R.mipmap.ic_male);
+            } else {
+                drawable = getResources().getDrawable(R.mipmap.ic_female);
+            }
+            gender.setImageDrawable(drawable);
+        }
+
         placeEventMarkers();
         //add all the events to the map
         setMarkerListener();
         setEventBarListener();
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -67,25 +106,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         lLayout.setTag("");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapview);
         mapFragment.getMapAsync(this);
-        // in case doesnt work try onMapReady as an anonymous function
+
         return v;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    //    private void setClickListener() {
-//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-//            @Override
-//            public void onMapClick(LatLng latLng)
-//            {
-//                //textView.setText(latLng.toString());
-//            }
-//        });
-//    }
 
     private void setEventBarListener()
     {
@@ -112,6 +136,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker)
             {
+                for(Polyline line : polylines)
+                {
+                    line.remove();
+                }
+                polylines.clear();
+
                 MarkerTag mtag = (MarkerTag) marker.getTag();
                 Event event = mtag.event;
                 Person person = mtag.person;
@@ -131,7 +161,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     Drawable drawable = getResources().getDrawable(R.mipmap.ic_female);
                     gender.setImageDrawable(drawable);
                 }
-                return true; // why is there a return statement?????
+
+                DataManager dman = DataManager.getInstance();
+                if(dman.marriageLinesOn)
+                {
+                    drawMarriageLine(event);
+                }
+                if(dman.familyLinesOn)
+                {
+                    drawAncestorLines(event, 5);
+                }
+                if(dman.lifeLinesOn)
+                {
+                    drawLifeEvents(event, 5);
+                }
+                return true;
             }
         });
 
@@ -193,5 +237,88 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
+
+
+    private void  drawMarriageLine(Event event)
+    {
+        DataManager dman = DataManager.getInstance();
+        LatLng latlon = new LatLng(event.getLatitude(),event.getLongitude());
+        Event spouseEvent = dman.getRelationsEarliestEvent(event, "Spouse");
+        if (spouseEvent != null)
+        {
+            LatLng latlonSpouse = new LatLng(spouseEvent.getLatitude(),spouseEvent.getLongitude());
+            drawLine(latlon, latlonSpouse, dman.marriageLineColor, 5);
+        }
+    }
+
+    private void drawAncestorLines(Event event, int lineWidth)
+    {
+        drawParentsLine(event, lineWidth);
+        DataManager dman = DataManager.getInstance();
+        Person currentPerson = dman.getPerson(event.getPersonID());
+        if(!currentPerson.getFather().equals("null"))
+        {
+            Event fatherEvent = dman.getRelationsEarliestEvent(event,"Father");
+            int width = lineWidth - 1;
+            if(width < 1)
+            {
+                width = 1;
+            }
+            drawAncestorLines(fatherEvent, width);
+        }
+        if(!currentPerson.getMother().equals("null"))
+        {
+            Event motherEvent = dman.getRelationsEarliestEvent(event,"Mother");
+            int width = lineWidth - 1;
+            if(width < 1)
+            {
+                width = 1;
+            }
+            drawAncestorLines(motherEvent, width);
+        }
+    }
+
+    private void drawParentsLine(Event event, int lineWidth)
+    {
+        DataManager dman = DataManager.getInstance();
+        LatLng latlon = new LatLng(event.getLatitude(),event.getLongitude());
+        Event fatherEvent = dman.getRelationsEarliestEvent(event,"Father");
+        if (fatherEvent != null)
+        {
+            LatLng latlonFather = new LatLng(fatherEvent.getLatitude(),fatherEvent.getLongitude());
+            drawLine(latlon, latlonFather, dman.familyLineColor, lineWidth);
+        }
+        Event motherEvent = dman.getRelationsEarliestEvent(event,"Mother");
+        if (motherEvent != null)
+        {
+            LatLng latlonMother = new LatLng(motherEvent.getLatitude(),motherEvent.getLongitude());
+            drawLine(latlon, latlonMother, dman.familyLineColor, lineWidth);
+        }
+    }
+
+    private void drawLifeEvents(Event event, int lineWidth)
+    {
+        DataManager dman = DataManager.getInstance();
+        Event[] events = dman.getEvents(event.getPersonID());
+        LatLng[] latlons = new LatLng[events.length];
+        for(int i = 0; i < events.length; i++)
+        {
+            latlons[i] = new LatLng(events[i].getLatitude(),events[i].getLongitude());
+        }
+        LatLng prev = latlons[0];
+        for(int i = 1; i < latlons.length; i++)
+        {
+            drawLine(prev, latlons[i], dman.lifeEventsColor, lineWidth);
+            prev = latlons[i];
+        }
+
+    }
+
+    void drawLine(LatLng point1, LatLng point2, int color, int lineWidth)
+    {
+        PolylineOptions options = new PolylineOptions().add(point1, point2).color(color).width(lineWidth);
+        polylines.add(mMap.addPolyline(options));
+    }
+
 
 }

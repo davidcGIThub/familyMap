@@ -3,16 +3,10 @@ package com.example.david.familymap;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-//import android.support.design.widget.FloatingActionButton;
-//import android.support.design.widget.Snackbar;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.ArrayList;
@@ -60,14 +54,20 @@ public class PersonActivity extends AppCompatActivity
 
         firstName.setText(person.getFirstName());
         lastName.setText(person.getLastName());
-        gender.setText(person.getGender());
-
-        String[] empty = new String[0];
+        if(person.getGender().equals("m"))
+        {
+            gender.setText("Male");
+        }
+        else
+        {
+            gender.setText("Female");
+        }
 
         eventList = (RecyclerView) findViewById(R.id.event_list);
         eventLayoutManager = new LinearLayoutManager(this);
         eventList.setLayoutManager(eventLayoutManager);
-        eventAdapter = new EventAdapter(empty);
+        Event[] emptyEvents = new Event[0];
+        eventAdapter = new EventAdapter(emptyEvents,this);
         eventList.setAdapter(eventAdapter);
         eventShow = false;
         eventLayout = (LinearLayout) findViewById(R.id.event_drop_down);
@@ -76,52 +76,14 @@ public class PersonActivity extends AppCompatActivity
         familyList = (RecyclerView) findViewById(R.id.family_list);
         familyLayoutManager = new LinearLayoutManager(this);
         familyList.setLayoutManager(familyLayoutManager);
-        familyAdapter = new FamilyAdapter(empty, this);
+        Person[] emptyPersons = new Person[0];
+        familyAdapter = new FamilyAdapter(emptyPersons,person, this);
         familyList.setAdapter(familyAdapter);
         familyLayout = (LinearLayout) findViewById(R.id.family_drop_down);
         familyShow = false;
         setFamilyListListener();
     }
 
-    private String[] makeEventText()
-    {
-        String eventText[] = new String[events.length];
-        for(int i = 0; i < events.length; i++)
-        {
-            eventText[i] = events[i].getEventType() + ": " + events[i].getCity() + ", " + events[i].getCountry() + " (" + events[i].getYear() + ")" +
-                            '\n' +  person.getFirstName() + " " + person.getLastName();
-        }
-        return eventText;
-    }
-
-    private String[] makeFamilyText()
-    {
-        DataManager dman = DataManager.getInstance();
-        Person[] family = dman.getFamily(person); // 0: Father 1 : Mother : 2 Spouse : 3 child etc  . . .
-        ArrayList<String> familyText= new ArrayList<String>();
-
-        if(family[0] != null)
-        {
-            familyText.add(family[0].getFirstName() + " " + family[0].getLastName() + '\n' + "Father");
-        }
-        if(family[1] != null)
-        {
-            familyText.add(family[1].getFirstName() + " " + family[1].getLastName() + '\n' + "Mother");
-        }
-        if(family[2] != null)
-        {
-            familyText.add(family[2].getFirstName() + " " + family[2].getLastName() + '\n' + "Spouse");
-        }
-        if(family[3] != null)
-        {
-            familyText.add(family[3].getFirstName() + " " + family[3].getLastName() + '\n' + "Child");
-        }
-
-        String[] familyReturned = new String[family.length];
-        familyText.toArray(familyReturned);
-
-        return familyReturned;
-    }
 
     private void setEventsListListener()
     {
@@ -132,14 +94,14 @@ public class PersonActivity extends AppCompatActivity
             {
                 if(eventShow)
                 {
-                    String[] empty = new String[0];
-                    eventAdapter = new EventAdapter(empty);
+                    Event[] empty = new Event[0];
+                    eventAdapter = new EventAdapter(empty,activity);
                     eventList.setAdapter(eventAdapter);
                     eventShow = false;
                 }
                 else
                 {
-                    eventAdapter = new EventAdapter(makeEventText());
+                    eventAdapter = new EventAdapter(events,activity);
                     eventList.setAdapter(eventAdapter);
                     eventShow = true;
                 }
@@ -156,14 +118,15 @@ public class PersonActivity extends AppCompatActivity
             {
                 if(familyShow)
                 {
-                    String[] empty = new String[0];
-                    familyAdapter = new FamilyAdapter(empty, activity);
+                    Person[] empty = new Person[0];
+                    familyAdapter = new FamilyAdapter(empty,person, activity);
                     familyList.setAdapter(familyAdapter);
                     familyShow = false;
                 }
                 else
                 {
-                    familyAdapter = new FamilyAdapter(makeFamilyText(), activity);
+                    DataManager dman = DataManager.getInstance();
+                    familyAdapter = new FamilyAdapter(dman.getFamily(person), person, activity);
                     familyList.setAdapter(familyAdapter);
                     familyShow = true;
                 }

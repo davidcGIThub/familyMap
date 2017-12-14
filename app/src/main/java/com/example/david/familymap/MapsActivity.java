@@ -35,9 +35,7 @@ public class MapsActivity extends FragmentActivity {
 
         textView = (TextView) findViewById(R.id.text);
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(new OnMapReadyCallback()
         {

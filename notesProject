@@ -26,5 +26,33 @@ public static DaoManager getInstance()
 DaoManager man = DaoManager.getInstance();
 
 
+// options on a fragment
+   //    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+//    {
+//        inflater.inflate(R.menu.map_fragment_toolbar, menu);
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item)
+//    {
+//        switch (item.getItemId())
+//        {
+//            case R.id.map_fragment_search_icon:
+//                startSearchActivity();
+//                return true;
+//            case R.id.map_fragment_filter_icon:
+//                startFilterActivity();
+//                return true;
+//            case R.id.map_fragment_settings_icon:
+//                startSettingsActivity();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
+
+
 
 

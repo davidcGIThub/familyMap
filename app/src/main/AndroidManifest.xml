@@ -37,7 +37,11 @@
             android:name=".PersonActivity"
             android:label="@string/title_activity_person"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".MapActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".FilterActivity"></activity>
     </application>
 
 </manifest>
