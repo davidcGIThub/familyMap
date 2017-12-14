@@ -1,11 +1,14 @@
 package task;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.david.familymap.MainActivity;
+import com.example.david.familymap.PersonActivity;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -29,10 +32,10 @@ public class ReSyncTask extends AsyncTask<LoginRequest, Void, String>
     private Context context;
     private boolean success;
 
-    public ReSyncTask()
+    public ReSyncTask(Context context)
     {
         DataManager dman = DataManager.getInstance();
-        context = dman.ORIGINAL_CONTEXT;
+        this.context = context;
     }
 
 
@@ -61,10 +64,12 @@ public class ReSyncTask extends AsyncTask<LoginRequest, Void, String>
             FamilyRequest familyRequest = new FamilyRequest(dman.authToken);
             FamilyResult familyResult = (FamilyResult) client.run("/person",familyRequest);
             dman.persons = familyResult.getPersons();
+            dman.allPersons = familyResult.getPersons();
 
             UserEventsRequest eventsRequest = new UserEventsRequest(dman.authToken);
             UserEventsResult eventsResult = (UserEventsResult) client.run("/event", eventsRequest);
             dman.events = eventsResult.getEvents();
+            dman.allEvents = eventsResult.getEvents();
             success = true;
         }
         else
@@ -81,8 +86,8 @@ public class ReSyncTask extends AsyncTask<LoginRequest, Void, String>
         Toast.makeText(context,response,Toast.LENGTH_LONG).show();
         if(success)
         {
-            MainActivity activity = (MainActivity) context;
-            activity.switchToMapFragment();
+            Intent intent = new Intent(context, MainActivity.class);
+            context.startActivity(intent);
         }
     }
 }

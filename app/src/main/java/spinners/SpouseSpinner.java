@@ -17,7 +17,7 @@ public class SpouseSpinner extends Activity implements AdapterView.OnItemSelecte
     {
         String item = parent.getItemAtPosition(pos).toString();
         DataManager dman = DataManager.getInstance();
-        dman.familyLineColor = dman.getColor(item);
+        dman.marriageLineColor = dman.getColor(item);
     }
 
     @Override

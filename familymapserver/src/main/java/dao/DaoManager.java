@@ -67,8 +67,8 @@ public class DaoManager
                     " Country text not null, " +
                     " City text not null, " +
                     " EventType text not null, " +
-                    " Year int not null, " +
-                    " contraint ck_EventType check (EventType in ('Birth','Baptism','Marriage','Death'))); " +
+                    " Year int not null );" +
+                    //" contraint ck_EventType check (EventType in ('Birth','Baptism','Marriage','Death'))); " +
 
                     " CREATE TABLE Users" +
                     " (Username text not null primary key, " +

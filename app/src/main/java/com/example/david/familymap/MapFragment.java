@@ -61,31 +61,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
         DataManager dman = DataManager.getInstance();
-        mMap.setMapType(dman.mapType);
-
-        Intent intent = getActivity().getIntent();
-        Event selectedEvent = dman.getEvent(intent.getStringExtra("EVENT_ID"));
-        if(selectedEvent != null)
-        {
-            LatLng latlon = new LatLng(selectedEvent.getLatitude(), selectedEvent.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlon));
-            Person selectedPerson = dman.getPerson(selectedEvent.getPersonID());
-            lLayout.setTag(selectedPerson.getPersonID());
-            fullName.setText(selectedPerson.getFirstName() + " " + selectedPerson.getLastName());
-            eventDetails.setText(selectedEvent.getEventType() + ": " + selectedEvent.getCity() + ", " + selectedEvent.getCountry() +
-                    " (" + selectedEvent.getYear() + ")");
-            Drawable drawable;
-            if (selectedPerson.getGender().equals("m")) {
-                drawable = getResources().getDrawable(R.mipmap.ic_male);
-            } else {
-                drawable = getResources().getDrawable(R.mipmap.ic_female);
-            }
-            gender.setImageDrawable(drawable);
-        }
-
+        dman.filter();
+        mMap = googleMap;
+        mMap.clear();
+        dman.filter();
         placeEventMarkers();
         //add all the events to the map
         setMarkerListener();
@@ -110,6 +90,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return v;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapview);
+        mapFragment.getMapAsync(this);
+    }
 
     private void setEventBarListener()
     {
@@ -236,6 +222,27 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         }
+        Intent intent = getActivity().getIntent();
+        String eventID = intent.getStringExtra("EVENT_ID");
+        Event selectedEvent = dman.getEvent(eventID);
+        if(selectedEvent != null)
+        {
+            LatLng latlon = new LatLng(selectedEvent.getLatitude(), selectedEvent.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlon));
+            Person selectedPerson = dman.getPerson(selectedEvent.getPersonID());
+            lLayout.setTag(selectedPerson.getPersonID());
+            fullName.setText(selectedPerson.getFirstName() + " " + selectedPerson.getLastName());
+            eventDetails.setText(selectedEvent.getEventType() + ": " + selectedEvent.getCity() + ", " + selectedEvent.getCountry() +
+                    " (" + selectedEvent.getYear() + ")");
+            Drawable drawable;
+            if (selectedPerson.getGender().equals("m")) {
+                drawable = getResources().getDrawable(R.mipmap.ic_male);
+            } else {
+                drawable = getResources().getDrawable(R.mipmap.ic_female);
+            }
+            gender.setImageDrawable(drawable);
+        }
+
     }
 
 

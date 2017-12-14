@@ -20,8 +20,12 @@ import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE;
 public class DataManager {
     private static DataManager instance = null;
     public Context ORIGINAL_CONTEXT;
+    public Event[] allEvents;
+    public Person[] allPersons;
     public Event[] events;
     public Person[] persons;
+    public String username;
+    public String password;
     public String authToken;
     public String serverHost;
     public String serverPort;
@@ -33,6 +37,15 @@ public class DataManager {
     public boolean familyLinesOn;
     public boolean lifeLinesOn;
     public int mapType;
+    public boolean malesFiltered;
+    public boolean femalesFiltered;
+    public boolean fatherFiltered;
+    public boolean motherFiltered;
+    public boolean baptismFiltered;
+    public boolean birthFiltered;
+    public boolean marriageFiltered;
+    public boolean deathFiltered;
+
 
 
     public DataManager()
@@ -46,6 +59,14 @@ public class DataManager {
         marriageLinesOn = false;
         familyLinesOn = false;
         lifeLinesOn = false;
+        malesFiltered = false;
+        femalesFiltered = false;
+        fatherFiltered = false;
+        motherFiltered = false;
+        baptismFiltered = false;
+        birthFiltered = false;
+        marriageFiltered = false;
+        deathFiltered = false;
     }
 
     public static DataManager getInstance() {
@@ -182,6 +203,8 @@ public class DataManager {
         userPersonID = null;
         serverHost = null;
         serverPort = null;
+        password = null;
+        username = null;
         marriageLineColor = Color.YELLOW;
         familyLineColor = Color.GREEN;
         lifeEventsColor = Color.BLUE;
@@ -189,6 +212,17 @@ public class DataManager {
         marriageLinesOn = false;
         familyLinesOn = false;
         lifeLinesOn = false;
+        marriageLinesOn = false;
+        familyLinesOn = false;
+        lifeLinesOn = false;
+        malesFiltered = false;
+        femalesFiltered = false;
+        fatherFiltered = false;
+        motherFiltered = false;
+        baptismFiltered = false;
+        birthFiltered = false;
+        marriageFiltered = false;
+        deathFiltered = false;
 
     }
 
@@ -196,6 +230,8 @@ public class DataManager {
     {
         events = null;
         persons = null;
+        authToken = null;
+        userPersonID = null;
     }
 
     public int getColor(String type)
@@ -251,5 +287,162 @@ public class DataManager {
                 break;
         }
     }
+
+    public Person[] searchPersons(String text)
+    {
+        ArrayList<Person> peopleFound = new ArrayList<Person>();
+        for(int i = 0; i < persons.length; i++)
+        {
+
+            if(persons[i].getFirstName().toLowerCase().contains(text.toLowerCase()) || persons[i].getLastName().toLowerCase().contains(text.toLowerCase()))
+            {
+                peopleFound.add(persons[i]);
+            }
+        }
+        Person[] personsFound = new Person[peopleFound.size()];
+        peopleFound.toArray(personsFound);
+        return personsFound;
+    }
+
+    public Event[] searchEvents(String text)
+    {
+        ArrayList<Event> eventsFound = new ArrayList<Event>();
+        for(int i = 0; i < events.length; i++)
+        {
+            String country = events[i].getCountry().toLowerCase();
+            String city = events[i].getCity().toLowerCase();
+            String year = Integer.toString(events[i].getYear());
+            String type = events[i].getEventType().toLowerCase();
+
+
+            if(country.contains(text.toLowerCase()) || city.contains(text.toLowerCase()) || year.contains(text.toLowerCase()) || type.contains(text.toLowerCase()))
+            {
+                eventsFound.add(events[i]);
+            }
+        }
+        Event[] arrEventsFound = new Event[eventsFound.size()];
+        eventsFound.toArray(arrEventsFound);
+        return arrEventsFound;
+    }
+
+    public void filter()
+    {
+        events = allEvents;
+        if(malesFiltered)
+        {
+            filterGender("m");
+        }
+        if(femalesFiltered)
+        {
+            filterGender("f");
+        }
+        if(fatherFiltered)
+        {
+            filterFatherSide();
+        }
+        if(motherFiltered)
+        {
+            filterMotherSide();
+        }
+        if(baptismFiltered)
+        {
+            filterEventType("Baptism");
+        }
+        if(birthFiltered)
+        {
+            filterEventType("Birth");
+        }
+        if(marriageFiltered)
+        {
+            filterEventType("Marriage");
+        }
+        if(deathFiltered)
+        {
+            filterEventType("Death");
+        }
+
+    }
+
+
+    public void filterEventType(String eventType)
+    {
+        ArrayList<Event> filteredEvents = new ArrayList<Event>();
+        for(int i = 0; i < events.length; i++)
+        {
+            if(!events[i].getEventType().toLowerCase().equals(eventType.toLowerCase()))
+            {
+                filteredEvents.add(events[i]);
+            }
+        }
+        Event[] temp = new Event[filteredEvents.size()];
+        filteredEvents.toArray(temp);
+        events = temp;
+    }
+
+    public void filterGender(String gender)
+    {
+        ArrayList<Event> filteredEvents = new ArrayList<Event>();
+        for(int i = 0; i < events.length; i++)
+        {
+            Person per = getPerson(events[i].getPersonID());
+            if(!per.getGender().equals(gender))
+            {
+                filteredEvents.add(events[i]);
+            }
+        }
+        Event[] temp = new Event[filteredEvents.size()];
+        filteredEvents.toArray(temp);
+        events = temp;
+    }
+
+    public void filterFatherSide()
+    {
+        Person user = getPerson(userPersonID);
+        filterPersonEvents(user.getFather());
+        filterAncestors(user.getFather());
+    }
+
+    public void filterMotherSide()
+    {
+        Person user = getPerson(userPersonID);
+        filterPersonEvents(user.getMother());
+        filterAncestors(user.getMother());
+    }
+
+    public void filterAncestors(String personID)
+    {
+        Person per = getPerson(personID);
+        if(!per.getFather().equals("null"))
+        {
+            filterPersonEvents(per.getFather());
+            filterAncestors(per.getFather());
+        }
+        if(!per.getMother().equals("null"))
+        {
+            filterPersonEvents(per.getMother());
+            filterAncestors(per.getMother());
+        }
+
+    }
+
+
+    public void filterPersonEvents(String personID)
+    {
+        ArrayList<Event> filteredEvents = new ArrayList<Event>();
+        for(int i = 0; i < events.length; i++)
+        {
+
+            if(!events[i].getPersonID().equals(personID))
+            {
+                filteredEvents.add(events[i]);
+            }
+        }
+        Event[] temp = new Event[filteredEvents.size()];
+        filteredEvents.toArray(temp);
+        events = temp;
+
+    }
+
+
 
 }

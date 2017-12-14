@@ -60,14 +60,16 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId())
         {
             case R.id.map_fragment_search_icon:
-                startSearchActivity();
+                Intent searchIntent = new Intent(this, SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
             case R.id.map_fragment_filter_icon:
-                startFilterActivity();
+                Intent filterIntent = new Intent(this, FilterActivity.class);
+                startActivity(filterIntent);
                 return true;
             case R.id.map_fragment_settings_icon:
-                Intent intent = new Intent(this, SettingsActivity.class);
-                startActivity(intent);
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
             default:
                 return true;

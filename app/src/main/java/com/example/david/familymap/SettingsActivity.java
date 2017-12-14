@@ -13,15 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
+import android.graphics.Color;
 import data.DataManager;
+import request.LoginRequest;
 import spinners.FamilySpinner;
 import spinners.LifeSpinner;
 import spinners.MapTypeSpinner;
 import spinners.SpouseSpinner;
+import task.ReSyncTask;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NORMAL;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_HYBRID;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_SATELLITE;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_TERRAIN;
+import static com.google.android.gms.maps.GoogleMap.MAP_TYPE_NONE;
 
 public class SettingsActivity extends AppCompatActivity {
-    private TextView mapType;
     private Spinner lifeStorySpinner;
     private Spinner familyTreeSpinner;
     private Spinner spouseSpinner;
@@ -84,6 +90,9 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 DataManager dman = DataManager.getInstance();
                 dman.resync();
+                LoginRequest loginRequest = new LoginRequest(dman.username, dman.password);
+                ReSyncTask task = new ReSyncTask(context);
+                task.execute(loginRequest);
             }
         });
 
@@ -114,6 +123,29 @@ public class SettingsActivity extends AppCompatActivity {
         lifeStoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lifeStorySpinner.setAdapter(lifeStoryAdapter);
         lifeStorySpinner.setOnItemSelectedListener(new LifeSpinner());
+        switch(dman.lifeEventsColor) {
+            case (Color.BLACK):
+                lifeStorySpinner.setSelection(0);
+                break;
+            case (Color.BLUE):
+                lifeStorySpinner.setSelection(1);
+                break;
+            case (Color.GREEN):
+                lifeStorySpinner.setSelection(2);
+                break;
+            case (Color.RED):
+                lifeStorySpinner.setSelection(3);
+                break;
+            case (Color.YELLOW):
+                lifeStorySpinner.setSelection(4);
+                break;
+            case (Color.WHITE):
+                lifeStorySpinner.setSelection(5);
+                break;
+            default:
+                lifeStorySpinner.setSelection(4);
+                break;
+        }
 
     }
 
@@ -131,6 +163,30 @@ public class SettingsActivity extends AppCompatActivity {
         spouseAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spouseSpinner.setAdapter(spouseAdapter);
         spouseSpinner.setOnItemSelectedListener(new SpouseSpinner());
+
+        switch(dman.marriageLineColor) {
+            case (Color.BLACK):
+                spouseSpinner.setSelection(0);
+                break;
+            case (Color.BLUE):
+                spouseSpinner.setSelection(1);
+                break;
+            case (Color.GREEN):
+                spouseSpinner.setSelection(2);
+                break;
+            case (Color.RED):
+                spouseSpinner.setSelection(3);
+                break;
+            case (Color.YELLOW):
+                spouseSpinner.setSelection(4);
+                break;
+            case (Color.WHITE):
+                spouseSpinner.setSelection(5);
+                break;
+            default:
+                spouseSpinner.setSelection(4);
+                break;
+        }
     }
 
     public void initializeFamilySettings()
@@ -150,16 +206,63 @@ public class SettingsActivity extends AppCompatActivity {
         familyTreeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         familyTreeSpinner.setAdapter(familyTreeAdapter);
         familyTreeSpinner.setOnItemSelectedListener(new FamilySpinner());
+
+        switch(dman.familyLineColor) {
+            case (Color.BLACK):
+                familyTreeSpinner.setSelection(0);
+                break;
+            case (Color.BLUE):
+                familyTreeSpinner.setSelection(1);
+                break;
+            case (Color.GREEN):
+                familyTreeSpinner.setSelection(2);
+                break;
+            case (Color.RED):
+                familyTreeSpinner.setSelection(3);
+                break;
+            case (Color.YELLOW):
+                familyTreeSpinner.setSelection(4);
+                break;
+            case (Color.WHITE):
+                familyTreeSpinner.setSelection(5);
+                break;
+            default:
+                familyTreeSpinner.setSelection(2);
+                break;
+        }
     }
 
     public void initializeMapTypeSettings()
     {
+        DataManager dman = DataManager.getInstance();
         mapTypeSpinner = (Spinner) findViewById(R.id.map_type_spinner);
         //mapTypeSpinner.setPromptId(2);
         ArrayAdapter<CharSequence> mapTypeAdapter = ArrayAdapter.createFromResource(this, R.array.mapTypeOptions, android.R.layout.simple_spinner_item);
         mapTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mapTypeSpinner.setAdapter(mapTypeAdapter);
         mapTypeSpinner.setOnItemSelectedListener(new MapTypeSpinner());
+
+        switch(dman.mapType)
+        {
+            case(MAP_TYPE_NORMAL):
+                mapTypeSpinner.setSelection(0);
+                break;
+            case(MAP_TYPE_HYBRID):
+                mapTypeSpinner.setSelection(1);
+                break;
+            case(MAP_TYPE_SATELLITE):
+                mapTypeSpinner.setSelection(2);
+                break;
+            case(MAP_TYPE_TERRAIN):
+                mapTypeSpinner.setSelection(3);
+                break;
+            case(MAP_TYPE_NONE):
+                mapTypeSpinner.setSelection(4);
+                break;
+            default:
+                mapTypeSpinner.setSelection(0);
+                break;
+        }
     }
 
 

@@ -70,6 +70,8 @@ public class LoginFragment extends android.support.v4.app.Fragment
                 DataManager dman = DataManager.getInstance();
                 dman.serverHost = host_;
                 dman.serverPort = port_;
+                dman.username = userName_;
+                dman.password = password_;
                 LoginRequest request = new LoginRequest(userName_,password_);
                 LoginTask task = new LoginTask(getActivity(),mSignInButton, mRegisterButton);
                 task.execute(request);
@@ -89,6 +91,8 @@ public class LoginFragment extends android.support.v4.app.Fragment
                 DataManager dman = DataManager.getInstance();
                 dman.serverHost = host_;
                 dman.serverPort = port_;
+                dman.username = userName_;
+                dman.password = password_;
                 RegisterRequest request = new RegisterRequest(userName_, password_, email_, firstName_, lastName_, gender_);
                 RegisterTask task = new RegisterTask(getActivity(), mSignInButton, mRegisterButton);
                 task.execute(request);

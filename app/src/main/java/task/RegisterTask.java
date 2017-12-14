@@ -64,10 +64,12 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, String>
             FamilyRequest familyRequest = new FamilyRequest(dman.authToken);
             FamilyResult familyResult = (FamilyResult) client.run("/person",familyRequest);
             dman.persons = familyResult.getPersons();
+            dman.allPersons = familyResult.getPersons();
 
             UserEventsRequest eventsRequest = new UserEventsRequest(dman.authToken);
             UserEventsResult eventsResult = (UserEventsResult) client.run("/event", eventsRequest);
             dman.events = eventsResult.getEvents();
+            dman.allEvents = eventsResult.getEvents();
             success = true;
         }
         else
